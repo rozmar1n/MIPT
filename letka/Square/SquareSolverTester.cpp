@@ -1,0 +1,71 @@
+#include"SquareSolverTester.h"
+#include"SquareSolver.h"
+#include "file.h"
+
+void SquareSolverTester(const char *TestFile)//return result
+{
+    square_equation test{};
+    FILE *tests_data = fopen(TestFile, "r");
+
+    if(tests_data == NULL)
+    {
+        printf("ERROR: could not open file\n");
+        exit(0);//return;
+    }
+    else
+    {
+        unsigned int test_number = 1;
+        do
+        {
+            int read = 0;
+
+
+            read = fscanf(tests_data,
+                          "%lg;%lg;%lg;%lg;%lg;%d\n",
+                          &test.coefficients.a,
+                          &test.coefficients.b,
+                          &test.coefficients.c,
+                          &test.solutions.x1Ref,
+                          &test.solutions.x2Ref,
+                          &test.solutions.nRootsRef);
+
+            if(read != 6 && !feof(tests_data))
+            {
+                printf("File format incorrect.\n");
+                exit(0);
+            }
+
+            if(ferror(tests_data))
+            {
+                printf("ERROR reading file.\n");
+                exit(0);
+            }
+
+            RunTest(test, test_number);
+            test_number++;
+
+        }while(!feof(tests_data));
+
+        fclose(tests_data);
+
+    }
+}
+
+void RunTest(square_equation test, unsigned int test_number)
+{
+    pred_sol AnsPred = SquareSolver(test.coefficients);
+
+
+    if(AnsPred.nRootsPred != test.solutions.nRootsRef || (fabs(AnsPred.x1Pred - test.solutions.x1Ref) > MaxDifference) ||
+            (fabs(AnsPred.x2Pred - test.solutions.x2Ref) > MaxDifference))
+        {
+            printf("\n\tERROR Test %d\n x1 = %lg x2 = %lg nRoots = %d a = %lg b = %lg c = %lg \n"
+            "\tEXPECTED:\n x1 = %lg x2 = %lg nRoots = %d\n\n", test_number, AnsPred.x1Pred, AnsPred.x2Pred, AnsPred.nRootsPred, test.coefficients.a, test.coefficients.b, test.coefficients.c,
+                                                                test.solutions.x1Ref, test.solutions.x2Ref, test.solutions.nRootsRef);
+        }
+        else
+        {
+            printf("Test %d Passed\n", test_number);
+        }
+}
+
