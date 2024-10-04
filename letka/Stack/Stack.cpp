@@ -1,30 +1,29 @@
 #include"Stack.h"
-//стоит ли сделать два хэша в структуре один реальный, другой для передачи во время ошибок???
 
-const double My_Left_Canareika = 0xbeefbeef;
-const double My_Right_Canareika = 0xdeaddeed;
-const double Poison = 0xdeadbeef; // hexspeak (ex: 0xdeadbeef...)
+const double My_Left_Canareika = 0xbeefaaaa;
+const long long int My_Right_Canareika = 0xdeaddeed;
+const double Poison = 0xdeadbeef;
 
 #define STACK_ASSERT(stk)  StackAssert(stk, __FILE__, __LINE__)
 
 
-
+FILE *logfile = fopen("log.txt", "w");
 int StackPush(Stack_t* stk, StackElem_t elem)
 {
     int err = 0;//проверка на ошибки в будущем
 
     STACK_ASSERT(stk);
-    if ((stk->stk_size) >= (stk->stk_capacity - 2))
+    if ((stk->stk_size) >= (stk->stk_capacity))
     {
-        (stk->stk_capacity) = 2*(stk->stk_capacity + 2);
-        (stk->stk_array) = (StackElem_t*)realloc((stk->stk_array), (stk->stk_capacity)*sizeof(StackElem_t));
+        (stk->stk_capacity) = 2*(stk->stk_capacity);
+        (stk->stk_array) = (StackElem_t*)realloc((stk->stk_array), (stk->stk_capacity + 2)*sizeof(StackElem_t));
         for (int i = stk->stk_size + 1; i < stk->stk_capacity; i++)
         {
             memcpy(&(stk->stk_array[i]), &Poison, 8);
         }
         
     }
-    memcpy(&(stk->stk_array)[stk->stk_capacity - 1], &My_Right_Canareika, 8);
+    (stk->stk_array)[stk->stk_capacity + 1] = My_Right_Canareika;
     (stk->stk_size)++;
     (stk->stk_array)[stk->stk_size] = elem;
     (stk->stk_hash) = StackHaschFunc(stk);
@@ -43,22 +42,22 @@ int StackPop(Stack_t* stk, StackElem_t* elem)
     {
         if ((stk->stk_capacity)/(stk->stk_size) >= 4)
         {
-            (stk->stk_capacity) = (stk->stk_capacity)/4 + 2;
+            (stk->stk_capacity) = (stk->stk_capacity)/3;
 
-           (stk->stk_array) = (StackElem_t*)realloc((stk->stk_array), ((stk->stk_capacity))*sizeof(StackElem_t));
+           (stk->stk_array) = (StackElem_t*)realloc((stk->stk_array), ((stk->stk_capacity + 2))*sizeof(StackElem_t));
            for (int i = stk->stk_size + 1; i < stk->stk_capacity; i++)
             {
                 memcpy(&(stk->stk_array[i]), &Poison, 8);
             }
         }
     }
-    //STACK_ASSERT(stk);
+
     if (stk->stk_size)
     {
         *elem = (stk->stk_array)[stk->stk_size];
         (stk->stk_array)[stk->stk_size] = Poison;
         (stk->stk_array)[stk->stk_size + 1] = Poison;
-        memcpy(&(stk->stk_array)[stk->stk_capacity - 1], &My_Right_Canareika, 8);
+        (stk->stk_array)[stk->stk_capacity + 1] = My_Right_Canareika;
         (stk->stk_size)--;
         stk->stk_hash = StackHaschFunc(stk);
     }
@@ -78,14 +77,14 @@ int StackCtor(Stack_t* stk, StackElem_t fst_elem)
     int err = 0;//сделать как-нибудь
 
     
-    (stk->stk_array) = (StackElem_t*)calloc(3, sizeof(StackElem_t));
+    (stk->stk_array) = (StackElem_t*)calloc(4, sizeof(StackElem_t));
     (stk->stk_size) = 1;
-    (stk->stk_capacity) = 3;
+    (stk->stk_capacity) = 2;
     
     //
-    (stk->stk_array)[0] = My_Left_Canareika;//put with memcpy;
+    (stk->stk_array)[0] = My_Left_Canareika;
     (stk->stk_array)[1] = fst_elem;
-    memcpy(&(stk->stk_array)[stk->stk_capacity -1], &My_Right_Canareika, 8);
+    (stk->stk_array)[stk->stk_capacity + 1] = My_Right_Canareika;
     (stk->stk_hash) = StackHaschFunc(stk);
 
     STACK_ASSERT(stk);
@@ -104,17 +103,16 @@ int StackDtor(Stack_t* stk)
 }
 
 // void* 
-// more info
 int StackDump(Stack_t* stk)
 {
     int err = 0;
-    fprintf(stderr, "Stack capacity: %zu\n", (stk->stk_capacity));
-    fprintf(stderr, "Stack size: %zu\n", (stk->stk_size));
-    fprintf(stderr, "Stack:\n");
+    fprintf(logfile, "Stack capacity: %zu\n", (stk->stk_capacity));
+    fprintf(logfile, "Stack size: %zu\n", (stk->stk_size));
+    fprintf(logfile, "Stack:\n");
     
-    for (size_t elem = 0; elem < (stk->stk_capacity); elem++)
+    for (size_t elem = 0; elem < (stk->stk_capacity + 2); elem++)
     {
-        fprintf(stderr, "%x ", (u_int32_t)(stk->stk_array)[elem]);
+        fprintf(logfile, "%x ", (u_int32_t)(stk->stk_array)[elem]);
     }
     printf("\n");
     return err;
@@ -122,7 +120,7 @@ int StackDump(Stack_t* stk)
 
 enum errors_t StackError(Stack_t* stk)//
 {
-    errors_t err = USE_HOROSHO; // STACK_ASS
+    errors_t err = VSE_HOROSHO;
     if(stk->stk_capacity < stk->stk_size)
     {
         err = STACK_SIZE_ZALUPA;
@@ -131,7 +129,7 @@ enum errors_t StackError(Stack_t* stk)//
     {
         err = LEFT_KANAREIKA_ZALUPA;
     }
-    if(((stk->stk_array)[stk->stk_capacity - 1]) != My_Right_Canareika)
+    if(((stk->stk_array)[stk->stk_capacity + 1]) != My_Right_Canareika)
     {
         err = RIGHT_KANAREIKA_ZALUPA;
     }
@@ -148,23 +146,23 @@ void StackAssert(Stack_t* stk, const char *file_name, const int line)
 {
     if (errors_t ERROR = StackError(stk))
     {
-        fprintf(stderr,"\n\n-----FILE: %s-----linе: %d-----\n\n", file_name, line);
+        fprintf(logfile,"\n\n-----FILE: %s-----linе: %d-----\n\n", file_name, line);
         
         switch (ERROR)
         {
         case STACK_SIZE_ZALUPA:
-            fprintf(stderr, "\n\n------STACK_SIZE_ZALUPA------ == %lg\n\n", (stk->stk_array)[0]);
+            fprintf(logfile, "\n\n------STACK_SIZE_ZALUPA------ == %lg\n\n", (stk->stk_array)[0]);
             break;
         case LEFT_KANAREIKA_ZALUPA:
-            fprintf(stderr, "\n\n------LEFT_KANAREIKA_ZALUPA------%lg\n\n", (stk->stk_array)[0]);
+            fprintf(logfile, "\n\n------LEFT_KANAREIKA_ZALUPA------%lg\n\n", (stk->stk_array)[0]);
             break;
         case RIGHT_KANAREIKA_ZALUPA:
-            fprintf(stderr, "\n\n------RIGHT_KANAREIKA_ZALUPA------ == %lg\n\n", (stk->stk_array)[stk->stk_capacity - 1]);
+            fprintf(logfile, "\n\n------RIGHT_KANAREIKA_ZALUPA------ == %x\n\n", (u_int32_t)(stk->stk_array)[stk->stk_capacity + 1]);
             break;   
         case HASH_ZALUPA:
-            fprintf(stderr, "\n\n------HASH_ZALUPA------\n"
+            fprintf(logfile, "\n\n------HASH_ZALUPA------\n"
                     "------EXPECTED:  %lld\n"
-                    "------RETURND:  %lld\n", (stk->stk_hash), StackHaschFunc(stk));   
+                    "------RETURND:  %lld\n", (stk->stk_hash), StackHaschFunc(stk));
             break; 
         default:
         printf("\n\n------POLNYI_PIZDEC------\n\n");

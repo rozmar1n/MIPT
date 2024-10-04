@@ -11,19 +11,6 @@
 #include<ctype.h>
 #include<math.h>
 #include<stdlib.h>
-//enum #ifndef _Stack_H
-#define _Stack_H
-
-//#include"TXLib.h"
-#include<cassert>
-
-#include<stdio.h>
-#include<malloc.h>
-#include<stdlib.h>
-#include<string.h>
-#include<ctype.h>
-#include<math.h>
-//enum for ERRORS
 
 typedef double StackElem_t;
 typedef unsigned long long hash_t;
@@ -38,7 +25,7 @@ struct Stack_t
 
 enum errors_t
 {
-    USE_HOROSHO,
+    VSE_HOROSHO,
     STACK_SIZE_ZALUPA,
     LEFT_KANAREIKA_ZALUPA,
     RIGHT_KANAREIKA_ZALUPA,

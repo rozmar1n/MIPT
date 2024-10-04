@@ -15,14 +15,14 @@ int main(void)
     while(my_stk.stk_size)
     {
         StackPop(&my_stk, &my_stk_elem);
-        printf("elem: %lg \n", my_stk_elem);
+        //printf("elem: %lg \n", my_stk_elem);
     }
     printf("\n");
     for (int i = 1; i < 100; i++)
     {
         StackPush(&my_stk, i);
     }
-    while(my_stk.stk_size)
+    while((my_stk.stk_size) - 9)
     {
         StackPop(&my_stk, &my_stk_elem);
         printf("elem: %lg \n", my_stk_elem);
