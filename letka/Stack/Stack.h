@@ -21,25 +21,27 @@ struct Stack_t
     size_t stk_size;
     size_t stk_capacity;
     hash_t stk_hash;
+    FILE* logfile = NULL;
 };
 
 enum errors_t
 {
-    VSE_HOROSHO,
-    STACK_SIZE_ZALUPA,
-    LEFT_KANAREIKA_ZALUPA,
-    RIGHT_KANAREIKA_ZALUPA,
-    HASH_ZALUPA
+    good_stack,
+    bad_stk_size,
+    left_canary_died,
+    right_canary_died,
+    hash_was_died,
+    bad_log_file
 };
 
 int StackPush(Stack_t* stk, StackElem_t elem);
 int StackPop(Stack_t* stk, StackElem_t* elem);
 int StackCtor(Stack_t* stk, StackElem_t fst_elem);
 int StackDtor(Stack_t* stk);
-int StackDump(Stack_t* stk);
-enum errors_t StackError(Stack_t* stk);
-void StackAssert(Stack_t* stk, const char *file_name, const int line);
-hash_t StackHaschFunc(Stack_t* stk);
+int StackDump(const Stack_t* stk);
+enum errors_t StackError(const Stack_t* stk);
+void StackAssert(const Stack_t* stk, const char *file_name, const int line);
+hash_t StackHashFunc(const Stack_t* stk);
 
 
 
