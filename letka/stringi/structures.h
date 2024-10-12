@@ -1,6 +1,5 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
-#include"TXLib.h"
 #include<stdio.h>
 
 struct matrix

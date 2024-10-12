@@ -1,4 +1,3 @@
-#include"TXLib.h"
 #include<stdio.h>
 #include"SquareArr.h"
 #include"TriangleArr.h"
