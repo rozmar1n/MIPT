@@ -2,175 +2,364 @@
 const int BufferSize = 25;
 const int InfoSize = 16;
 
-double* MakeAlgorithm(const char *cmdFile)
+void MakeSPU(const char *cmdFile, SPU_t *SPU)
 {
-    FILE* commandFile = fopen(cmdFile, "r");
-    if (commandFile == NULL)
+    
+    FILE* machCode = fopen(cmdFile, "r");
+    if (machCode == NULL)
     {
         fprintf(stderr, "We cannot open this file!\n");
-        fprintf(stderr, "fileptr: %p", commandFile);
-        return NULL;
+        fprintf(stderr, "fileptr: %p", machCode);
+        return;
     }    
     
     char buffer[BufferSize];
     double* algorithm = NULL;
 
     char info[InfoSize] = {};
-    fscanf(commandFile, "%s", info);
+    fscanf(machCode, "%s", info);
     if (strcmp(info, "ROST"))
     {
         fprintf(stderr, "We cannot read this type of code!\n");
-        return NULL;
+        return;
     }
     else
     {
-        fscanf(commandFile, "%s", info);
+        fscanf(machCode, "%s", info);
         if (strcmp(info, "1"))
         {
             fprintf(stderr, "Version of compiler and processor are not similar");
             fprintf(stderr, "version: %s", info);
-            return NULL;
+            return;
         }
         else
         {
-            fscanf(commandFile, "%s", info);
+            fscanf(machCode, "%s", info);
             char* temp = NULL;
             u_int32_t ncmds = strtoul(info, &temp, 16);
+
             //fprintf(stderr, "size: %d\n", ncmds);
-            double* cmdarray = (double*)calloc(ncmds, sizeof(double));
-            //fprintf(stderr, "заколлочено\n");
+            SPU->cmds = (double*)calloc(ncmds, sizeof(double));
+            //fprintf(stderr, "SPU->cmds callocated correctly\n");
+
             char string_elem[25] = {'\0'};
             double elem = 0;
             for (u_int32_t i = 0; i < ncmds; i++)
             {
-                fscanf(commandFile, "%s", string_elem);
+                fscanf(machCode, "%s", string_elem);
                 //fprintf(stderr, "%s ", string_elem);
                 elem = strtod(string_elem, &temp);
-                *(cmdarray + i) = elem;
-                //fprintf(stderr, "%lg ", cmdarray[i]);
+                *(SPU->cmds + i) = elem;
+                //fprintf(stderr, "%lg ", SPU->cmds[i]);
             }
-            fprintf(stderr, "\n");
-            return cmdarray;
+            //fprintf(stderr, "\n");
+            return;
         }
     }
 }
-void Run(double code[], size_t size)
+
+void add_f(SPU_t *SPU)
 {
-    Stack_t stk = {};
-    StackCtor(&stk, 0);
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    double b = NAN;
+    StackPop(&(SPU->stk), &b);
+    assert(a != NAN && b != NAN);
+    StackPush(&(SPU->stk), a + b);
+    SPU->ip += 1;
+}
 
+void sub_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    double b = NAN;
+    StackPop(&(SPU->stk), &b);
+    assert(a != NAN && b != NAN);
+    StackPush(&(SPU->stk), b - a);
+    SPU->ip += 1;
+}
 
-    int ip = 0;
+void jmp_f(SPU_t *SPU)
+{
+    int temp_ip = SPU->cmds[SPU->ip+1];
+    SPU->ip = temp_ip; 
+}
+
+void ja_f(SPU_t *SPU)
+{
+    double a = 0;
+    StackPop(&SPU->stk, &a);
+    double b = 0;
+    StackPop(&SPU->stk, &b);
+    if (b > a)
+    {
+        int temp_ip = SPU->cmds[SPU->ip+1];
+        SPU->ip = temp_ip;
+    }
+}
+
+void jae_f(SPU_t *SPU)
+{
+    double a = 0;
+    StackPop(&SPU->stk, &a);
+    double b = 0;
+    StackPop(&SPU->stk, &b);
+    if (b >= a)
+    {
+        int temp_ip = SPU->cmds[SPU->ip+1];
+        SPU->ip = temp_ip;
+    }
+}
+
+void jb_f(SPU_t *SPU)
+{
+    double a = 0;
+    StackPop(&SPU->stk, &a);
+    double b = 0;
+    StackPop(&SPU->stk, &b);
+    if (b < a)
+    {
+        int temp_ip = SPU->cmds[SPU->ip+1];
+        SPU->ip = temp_ip;
+    }
+}
+
+void jbe_f(SPU_t *SPU)
+{
+    double a = 0;
+    StackPop(&SPU->stk, &a);
+    double b = 0;
+    StackPop(&SPU->stk, &b);
+    if (b <= a)
+    {
+        int temp_ip = SPU->cmds[SPU->ip+1];
+        SPU->ip = temp_ip;
+    }
+}
+
+void je_f(SPU_t *SPU)
+{
+    double a = 0;
+    StackPop(&SPU->stk, &a);
+    double b = 0;
+    StackPop(&SPU->stk, &b);
+    if (b == a)
+    {
+        int temp_ip = SPU->cmds[SPU->ip+1];
+        SPU->ip = temp_ip;
+    }
+}
+
+void jne_f(SPU_t *SPU)
+{
+    double a = 0;
+    StackPop(&SPU->stk, &a);
+    double b = 0;
+    StackPop(&SPU->stk, &b);
+    if (b != a)
+    {
+        int temp_ip = SPU->cmds[SPU->ip+1];
+        SPU->ip = temp_ip;
+    }
+}
+
+void div_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    double b = NAN;
+    StackPop(&(SPU->stk), &b);
+    assert(a != NAN && b != NAN);
+    StackPush(&(SPU->stk), b/a);
+    SPU->ip += 1;
+}
+
+void mul_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    double b = NAN;
+    StackPop(&(SPU->stk), &b);
+    assert(a != NAN && b != NAN);
+    StackPush(&(SPU->stk), b*a);
+    SPU->ip += 1;
+}
+
+void sqrt_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    assert(a != NAN);
+    StackPush(&(SPU->stk), sqrt(a));
+    SPU->ip += 1;
+}
+
+void sin_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    assert(a != NAN);
+    StackPush(&(SPU->stk), sin(a));
+    SPU->ip += 1;
+}
+
+void cos_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    assert(a != NAN);
+    //fprintf(stderr, "%lg ", a);
+    a = cos(a);
+    //fprintf(stderr, "%lg \n", a);
+    StackPush(&(SPU->stk), cos(a));
+    SPU->ip += 1;
+}
+
+void in_f(SPU_t *SPU)
+{
+    double a = NAN;
+    scanf("%lg", &a);
+    StackPush(&(SPU->stk), a);
+    SPU->ip += 1;
+}
+
+void out_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    assert(a != NAN);
+    printf("%lg\n", a);
+    SPU->ip += 1;
+}
+
+void pushr_f(SPU_t *SPU)
+{
+    StackPush(&SPU->stk, SPU->registers[(int)(SPU->ip + 1)]);
+    SPU->ip += 2;
+}
+
+void pop_f(SPU_t *SPU)
+{
+    double a = 0;
+    StackPop(&SPU->stk, &a);
+    SPU->registers[(int)(SPU->ip + 1)] = a;
+    SPU->ip += 1;
+}
+void Run(SPU_t *SPU)
+{
     int runCond = 0;
     while(runCond == 0)
     {
         //fprintf(stderr, "cmd: %d\n", (int)code[ip]);
-        switch ((int)code[ip])
+        switch ((int)SPU->cmds[SPU->ip])
         {
-        case push: {
-            StackPush(&stk, code[ip+1]);
-            ip += 2;
+        case _cmd_push: {
+            StackPush(&(SPU->stk), SPU->cmds[SPU->ip+1]);
+            SPU->ip += 2;
             break;
         }
-        case add: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            double b = NAN;
-            StackPop(&stk, &b);
-            assert(a != NAN && b != NAN);
-            StackPush(&stk, a + b);
-            ip += 1;
+        case _cmd_add: {
+            add_f(SPU);
             break;
         }
-        case sub: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            double b = NAN;
-            StackPop(&stk, &b);
-            assert(a != NAN && b != NAN);
-            StackPush(&stk, b - a);
-            ip += 1;
+        case _cmd_sub: {
+            sub_f(SPU);
             break;
         }
-        case divs: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            double b = NAN;
-            StackPop(&stk, &b);
-            assert(a != NAN && b != NAN);
-            StackPush(&stk, b/a);
-            ip += 1;
+        case _cmd_div: {
+            div_f(SPU);
             break;
         }    
-        case mul: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            double b = NAN;
-            StackPop(&stk, &b);
-            assert(a != NAN && b != NAN);
-            StackPush(&stk, b*a);
-            ip += 1;
+        case _cmd_mul: {
+            mul_f(SPU);
             break;
         }
-        case sqr: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            assert(a != NAN);
-            StackPush(&stk, sqrt(a));
-            ip += 1;
+        case _cmd_sqrt: {
+            sqrt_f(SPU);
             break;
         }
-        case sins: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            assert(a != NAN);
-            StackPush(&stk, sin(a));
-            ip += 1;
+        case _cmd_sin: {
+            sin_f(SPU);
             break;
         }
-        case coss: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            assert(a != NAN);
-            //fprintf(stderr, "%lg ", a);
-            a = cos(a);
-            //fprintf(stderr, "%lg \n", a);
-            StackPush(&stk, cos(a));
-            ip += 1; 
+        case _cmd_cos: {
+            cos_f(SPU);
             break;
         }
-        case hlt: {
-            StackDtor(&stk);
+        case _cmd_hlt: {
+            StackDtor(&(SPU->stk));
             runCond = 1;
             break;
         }
-        case dump: {
-            StackDump(&stk);
-            ip += 1;
+        case _cmd_dump: {
+            StackDump(&(SPU->stk));//TODO: написать нормальный дамп
+            SPU->ip += 1;
             break;
         }
-        case in: {
-            double a = NAN;
-            scanf("%lg", &a);
-            StackPush(&stk, a);
-            ip += 1;
+        case _cmd_in: {
+            in_f(SPU);
             break;
         }
-        case out: {
-            double a = NAN;
-            StackPop(&stk, &a);
-            //assert(a != NAN);
-            printf("%lg\n", a);
-            ip += 1;
+        case _cmd_out: {
+            out_f(SPU);
             break;
         }
-        
+        case _cmd_pushr: {
+            pushr_f(SPU);
+            break;
+        }
+        case _cmd_pop: {
+            pop_f(SPU);
+            break;
+        }
+        case _cmd_jmp: {
+            jmp_f(SPU);
+            break;
+        }
+        case _cmd_ja: {
+            ja_f(SPU);
+            break;
+        }
+        case _cmd_jae: {
+            jae_f(SPU);
+            break;
+        }
+        case _cmd_jb: {
+            jb_f(SPU);
+            break;
+        }
+        case _cmd_jbe: {
+            jbe_f(SPU);
+            break;
+        }
+        case _cmd_je: {
+            je_f(SPU);
+            break;
+        }
+        case _cmd_jne: {
+            jne_f(SPU);
+            break;
+        }
         default: 
-            fprintf(stk.logfile, 
+            fprintf((SPU->stk).logfile, 
             "\n------------------Invalid command"
             "--------------\n");
             break;
         }
         
     }
+}
+
+SPU_t MakeNullSPU()
+{
+    SPU_t NullSPU;
+    Stack_t null_stk;
+    StackCtor(&null_stk, 0);
+
+    NullSPU.cmds      = NULL;
+    NullSPU.ip        = 0;
+    NullSPU.stk       = null_stk;
+    NullSPU.registers = (int*)calloc(nRegisters, sizeof(int));
+    return NullSPU;
 }

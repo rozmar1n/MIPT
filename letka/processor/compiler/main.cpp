@@ -11,14 +11,14 @@ int main(int argc, const char *argv[])
         if (argc > 2)
             strcpy(OutputFile, argv[2]);
         else
-            strcpy(OutputFile, "new_program.txt");
+            strcpy(OutputFile, "new_program.bin");
     }
     else
     {
         strcpy(InputFile, "default.txt");
-        strcpy(OutputFile, "new_program.txt");
+        strcpy(OutputFile, "new_program.bin");
     }
     fprintf(stderr, "InputFile: %s\n OutputFile: %s\n", InputFile, OutputFile);
 
-    MakeAsm(InputFile, OutputFile);
+    MakeMachCode(InputFile, OutputFile, "logfile.txt");
 }
