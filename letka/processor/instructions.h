@@ -1,6 +1,10 @@
 #ifndef instructions_h
 #define instructions_h
 
+#include <stdlib.h>
+
+const u_int32_t signatura = 82798384;
+
 enum instruction_t
 {
     _cmd_push  =  1,

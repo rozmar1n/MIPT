@@ -45,6 +45,7 @@ struct SPU_t
 };
 
 void  MakeSPU    (const char *cmdFile, SPU_t *SPU);
+void  MakeBinSPU (const char *binFile, SPU_t *SPU);
 void  Run        (SPU_t *SPU);
 SPU_t MakeNullSPU();
 #endif //processor

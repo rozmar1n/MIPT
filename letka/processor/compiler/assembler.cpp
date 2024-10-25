@@ -1,7 +1,8 @@
 #include"assembler.h"
 
-void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logFile)
+void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logFile, int iter, labelArray_t* labels)
 {      
+
     FILE* machFile = fopen(logFile, "w");
     if (machFile == 0)
     {
@@ -16,17 +17,12 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         return;
     }
 
-    fprintf(machFile, "%s\n", signature);
-    
-    char signa[] = {82, 79, 83, 84};
-
-
+    fprintf(machFile, "%s\n", "ROST");
     fprintf(machFile, "%d\n", ass_version);
-
     long int txt_sizeptr = ftell(machFile);
 
-    double* cmd_array = (double*)calloc(1024, sizeof(double));
-    int cmd_counter = 0;
+        double* cmd_array = (double*)calloc(1024, sizeof(double));
+        int cmd_counter = 0;
 
     for (int i = 0; i < 2*sizeof(unsigned int); i++)
     {
@@ -41,104 +37,41 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
 //TODO: хэдер под  команды
 //TODO: вынести массив структур с командами (instruction).
 
-
     while (err)
     {
         err = fscanf(asmFile, "%s", cmd);//TODO: check 10 symbols //fgets or make buffer for full code 
-
+        fprintf(stderr, "%s\n", cmd);
         if (strcmp(cmd, "push") == 0)
         {
+            
+            
             if(err) err = fscanf(asmFile, "%s", cmd);
-            if(cmd[1] == 'x')
+            int reg = -1;
+            reg = FillReg(cmd);
+            if (reg != -1)
             {
-                double reg = 0;
-
-                if(err) err = fprintf(machFile, "%d ", _cmd_pushr);
-                
+                fprintf(machFile, "%d ", _cmd_pushr);
                 cmd_array[cmd_counter] = _cmd_pushr;
                 cmd_counter++;
 
-                if (cmd[0] == 'a')
-                {
-                    fprintf(machFile, "%d ", ax);
-                    
-                    cmd_array[cmd_counter] = ax;
-                    cmd_counter++;
-                    
-                    continue;
-                }
-                if (cmd[0] == 'b')
-                {
-                    fprintf(machFile, "%d ", bx);
-                    cmd_array[cmd_counter] = bx;
-                    cmd_counter++;
-                    continue;
-                }
-                if (cmd[0] == 'c')
-                {
-                    fprintf(machFile, "%d ", cx);
-                    cmd_array[cmd_counter] = cx;
-                    cmd_counter++;
-                    continue;
-                }
-                if (cmd[0] == 'd')
-                {
-                    fprintf(machFile, "%d ", dx);
-                    
-                    cmd_array[cmd_counter] = dx;
-                    cmd_counter++;
-                    
-                    continue;
-                }
-                if (cmd[0] == 'e')
-                {
-                    fprintf(machFile, "%d ", ex);
-                    
-                    cmd_array[cmd_counter] = ex;
-                    cmd_counter++;
-                    
-                    continue;
-                }
-                if (cmd[0] == 'f')
-                {
-                    fprintf(machFile, "%d ", fx);
-                    
-                    cmd_array[cmd_counter] = fx;
-                    cmd_counter++;
-                    
-                    continue;
-                }
-                if (cmd[0] == 'g')
-                {
-                    fprintf(machFile, "%d ", gx);
-                    cmd_array[cmd_counter] = gx;
-                    cmd_counter++;
-                    continue;
-                }
-                if (cmd[0] == 'h')
-                {
-                    fprintf(machFile, "%d ", hx);
-                    cmd_array[cmd_counter] = hx;
-                    cmd_counter++;
-                    continue;
-                }//make func for registers 
+                fprintf(machFile, "%d ", reg);
+                cmd_array[cmd_counter] = reg;
+                cmd_counter++;
             }
             else
             {
-                double command_arg;
-                if(err) err = fprintf(machFile, "%d ", _cmd_push);
+                fprintf(machFile, "%d ", _cmd_push);
                 cmd_array[cmd_counter] = (u_int32_t)_cmd_push;
                 cmd_counter++;
-                            
-                if(err) err = fprintf(machFile, "%s ", cmd);
                 
+                fprintf(machFile, "%s ", cmd);
                 cmd_array[cmd_counter] = atof(cmd);
                 cmd_counter++;
             }
-
             nComands += 2;
             continue;
         }
+
         if (strcmp(cmd, "pop") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_pop);
@@ -146,12 +79,28 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
             cmd_array[cmd_counter] = (u_int32_t)_cmd_pop;
                 cmd_counter++;
             
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            if(err) err = fscanf(asmFile,  "%s" , cmd);
 
-            cmd_array[cmd_counter] = atof(cmd);
+            int reg = -1;
+            reg = FillReg(cmd);
+            if (reg != -1)
+            {
+                fprintf(machFile, "%d ", reg);
+                cmd_array[cmd_counter] = reg;
                 cmd_counter++;
+            }
+            else
+            {
+                fprintf(machFile, "%d ", _cmd_push);
+                cmd_array[cmd_counter] = (u_int32_t)_cmd_push;
+                cmd_counter++;
+
+                fprintf(machFile, "%s ", cmd);
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+            }
             
-            if(err) err = fprintf(machFile, "%s ", cmd);
+
             
             nComands += 2;
             continue;
@@ -227,8 +176,10 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         if (strcmp(cmd, "cos") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_cos);
+            
             cmd_array[cmd_counter] = (u_int32_t)_cmd_cos;
                 cmd_counter++;
+            
             nComands++;
             continue;
         }
@@ -244,112 +195,193 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_hlt);
             
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_hlt;
+            cmd_array[cmd_counter] = _cmd_hlt;
                 cmd_counter++;
             
             nComands++;
             err = 0;
             continue;
         }
-        if (strcmp(cmd, "jmp"))
+        if (strcmp(cmd, "jmp") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_jmp);
+            cmd_array[cmd_counter] = _cmd_jmp;
+                cmd_counter++;
             if(err) err = fscanf (asmFile,  "%s" , cmd);
 
-            cmd_array[cmd_counter] = atof(cmd);
+            if (strchr(cmd, ':'))
+            {
+                cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
                 cmd_counter++;
+            }
+            else
+            {
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+                fprintf(machFile, "%s ", cmd);
+            }
             
-            if(err) err = fprintf(machFile, "%s ", cmd);
             nComands += 2;
             continue;
         }
-        if (strcmp(cmd, "ja"))
+        if (strcmp(cmd, "ja") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_ja);
+            cmd_array[cmd_counter] = _cmd_ja;
+                cmd_counter++;
             if(err) err = fscanf (asmFile,  "%s" , cmd);
 
-            cmd_array[cmd_counter] = atof(cmd);
+            if (strchr(cmd, ':'))
+            {
+                cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
                 cmd_counter++;
+            }
+            else
+            {
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+                fprintf(machFile, "%s ", cmd);
+            }
 
-            if(err) err = fprintf(machFile, "%s ", cmd);
             nComands += 2;
             continue;
         }
-        if (strcmp(cmd, "jae"))
+        if (strcmp(cmd, "jae") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_jae);
-
+            cmd_array[cmd_counter] = _cmd_jae;
+                cmd_counter++;
             if(err) err = fscanf (asmFile,  "%s" , cmd);
 
-            cmd_array[cmd_counter] = atof(cmd);
+            if (strchr(cmd, ':'))
+            {
+                cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
                 cmd_counter++;
+            }
+            else
+            {
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+                fprintf(machFile, "%s ", cmd);
+            }
 
             if(err) err = fprintf(machFile, "%s ", cmd);
             nComands += 2;
             continue;
         }
-        if (strcmp(cmd, "jb"))
+        if (strcmp(cmd, "jb") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_jb);
-
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
-
-            cmd_array[cmd_counter] = atof(cmd);
+            cmd_array[cmd_counter] = _cmd_jb;
                 cmd_counter++;
-
-            if(err) err = fprintf(machFile, "%s ", cmd);
+            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            if (strchr(cmd, ':'))
+            {
+                cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
+                cmd_counter++;
+            }
+            else
+            {
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+                fprintf(machFile, "%s ", cmd);
+            }
+            
             nComands += 2;
             continue;
         }
-        if (strcmp(cmd, "jbe"))
+        if (strcmp(cmd, "jbe") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_jbe);
-
+            cmd_array[cmd_counter] = _cmd_jbe;
+                cmd_counter++;
             if(err) err = fscanf (asmFile,  "%s" , cmd);
 
-            cmd_array[cmd_counter] = atof(cmd);
+            if (strchr(cmd, ':'))
+            {
+                cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
                 cmd_counter++;
+            }
+            else
+            {
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+                fprintf(machFile, "%s ", cmd);
+            }
 
             if(err) err = fprintf(machFile, "%s ", cmd);
             nComands += 2;
             continue;
         }
-        if (strcmp(cmd, "je"))
+        if (strcmp(cmd, "je") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_je);
-
+            cmd_array[cmd_counter] = _cmd_je;
+                cmd_counter++;
             if(err) err = fscanf (asmFile,  "%s" , cmd);
 
-            cmd_array[cmd_counter] = atof(cmd);
+            if (strchr(cmd, ':'))
+            {
+                cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
                 cmd_counter++;
+            }
+            else
+            {
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+                fprintf(machFile, "%s ", cmd);
+            }
 
             if(err) err = fprintf(machFile, "%s ", cmd);
             nComands += 2;
             continue;
         }
-        if (strcmp(cmd, "jne"))
+        if (strcmp(cmd, "jne") == 0)
         {
             if(err) err = fprintf(machFile, "%d ", _cmd_jne);
-
+            cmd_array[cmd_counter] = _cmd_jne;
+                cmd_counter++;
             if(err) err = fscanf (asmFile,  "%s" , cmd);
 
-            cmd_array[cmd_counter] = atof(cmd);
+            if (strchr(cmd, ':'))
+            {
+                cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
                 cmd_counter++;
+            }
+            else
+            {
+                cmd_array[cmd_counter] = atof(cmd);
+                cmd_counter++;
+                fprintf(machFile, "%s ", cmd);
+            }
 
             if(err) err = fprintf(machFile, "%s ", cmd);
             nComands += 2;
+            continue;
+        }
+        if (strchr(cmd, ':'))
+        {
+            if(!IsLabel(labels, cmd))
+            {
+                MakeLabel(labels, cmd, nComands++);
+            }
             continue;
         }
         err = 0;
     }
-    fprintf(machFile, "-1 ");
-    nComands++;
 
     ///////////////////////////////////
-    for (int i = 0; i < nComands; i++)
-    {
-        fprintf(stderr, "%x %lg\n", cmd_array[i], cmd_array[i]);
-    }
+    // for (int i = 0; i < nComands; i++)
+    // {
+    //     fprintf(stderr, "%x %lg\n", cmd_array[i], cmd_array[i]);
+    // }
     ///////////////////////////////////
 
     fseek(machFile, txt_sizeptr, SEEK_SET);
@@ -358,22 +390,121 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
     fclose(machFile);
     fclose(asmFile);
 
-    BinWrite(cmd_array, cmdFile, nComands);
-
+    fprintf(stderr, "first dump: \n");
+    LabelDump(labels);
+    if (iter == 2)
+    {
+        BinWrite(cmd_array, cmdFile, nComands);
+        LabelDtor(labels);
+    }
+    fprintf(stderr, "second dump: \n");
+    LabelDump(labels);
     return;
+}
+
+int FillReg(char* cmd)
+{
+    if(strchr(cmd, 'x'))
+    {
+        if (strchr(cmd, 'a')) return ax;
+        if (strchr(cmd, 'b')) return bx;
+        if (strchr(cmd, 'c')) return cx;
+        if (strchr(cmd, 'd')) return dx;
+        if (strchr(cmd, 'e')) return ex;
+        if (strchr(cmd, 'f')) return fx;
+        if (strchr(cmd, 'g')) return gx;
+        if (strchr(cmd, 'h')) return hx;
+        
+        return -1;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 void BinWrite(double* cmd_array, const char* BinFileName, u_int32_t nComands)
 {
     FILE* binFile = fopen(BinFileName, "wb"); assert(binFile);
+    
     fwrite(&signatura, sizeof(u_int32_t), 1, binFile);
     fwrite(&ass_version, sizeof(int), 1, binFile);
+    fwrite(&nComands, sizeof(u_int32_t), 1, binFile);
+
     fwrite(cmd_array, sizeof(double), nComands, binFile);
     fclose(binFile);
+    
+    fprintf(stderr, "\n\n\n\t\033[46mArrayDump\033[0m\n");
+    for (int i = 0; i < nComands; i++)
+    {
+        fprintf(stderr, "%lg  ", cmd_array[i]);
+    }
+    
+
     free(cmd_array);
 }
 
-void labelCtor(labelArray_t* lblarr, int nlabels)
+void LabelCtor(labelArray_t* lblarr, int nlabels)
 {
+    lblarr->array = (label_t*)calloc(nlabels, sizeof(label_t));
+    lblarr->used_labels = 0;
+    for (size_t i = 0; i < nlabels; i++)
+    {
+        for (size_t j = 0; j < 128; j++)
+        {
+            lblarr->array[i].label_name[j] = '\0';
+        }
+        lblarr->array[i].line_number = -1;
+    }
+}
 
+void LabelDtor(labelArray_t* lblarr)
+{
+    free(lblarr->array);
+    lblarr->used_labels = -1;
+}
+
+void LabelDump(labelArray_t* lblarr)
+{
+    fprintf(stderr, "-----------------------------------------------------------------------------------------------------------------------------------------------------\n"
+                    "\n//////////---LabelDump---//////////\n");
+    
+    for (int i = 0; i < amount_of_labels; i++)
+    {
+        fprintf(stderr, "lbl name: %s; line_number: %d\n", lblarr->array[i].label_name, lblarr->array[i].line_number);
+    }
+    fprintf(stderr, "number of used labels: %u\n", lblarr->used_labels);
+    fprintf(stderr, "-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
+}
+
+void MakeLabel(labelArray_t* lblarr, char* labelName, int lineNumber)
+{
+    strcpy(lblarr->array[lblarr->used_labels].label_name, labelName);
+    lblarr->array[lblarr->used_labels].line_number = lineNumber;
+    lblarr->used_labels++;
+}
+
+double TakeLabel(labelArray_t* lblarr, char* labelName)
+{
+    double ret_line;
+    for (int i = 0; i < lblarr->used_labels; i++)
+    {
+        if (strcmp(labelName, lblarr->array[i].label_name) == 0)
+        {
+            return lblarr->array[i].line_number;
+        }
+    }
+    return -1;
+}
+
+int    IsLabel (labelArray_t* lblarr, char* labelName)
+{
+    for (int i = 0; i < lblarr->used_labels; i++)
+    {
+        if (strcmp(labelName, lblarr->array[i].label_name) == 0)
+        {
+            return 1;
+        }
+    }
+    return 0;
 }

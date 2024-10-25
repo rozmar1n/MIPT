@@ -58,6 +58,31 @@ void MakeSPU(const char *cmdFile, SPU_t *SPU)
     }
 }
 
+void  MakeBinSPU (const char *binFile, SPU_t *SPU)
+{
+    FILE* machCode = fopen(binFile, "rb"); assert(machCode);
+    
+    u_int32_t signature = 0;
+    fread(&signature, sizeof(u_int32_t), 1, machCode);
+    fprintf(stderr, "signature: %u\n", signature);
+
+    int ass_version = 0;
+    fread(&ass_version, sizeof(int), 1, machCode);
+    fprintf(stderr, "ass_version: %d\n", ass_version);
+
+    u_int32_t nComands = 0;
+    fread(&nComands, sizeof(u_int32_t), 1, machCode);
+    fprintf(stderr, "nCommands: %u\n", nComands);
+
+    SPU->cmds = (double*)calloc(nComands, sizeof(double));
+
+    fread(SPU->cmds, sizeof(double), nComands, machCode);
+    for (size_t i = 0; i < nComands; i++)
+    {
+        fprintf(stderr, "%2lu. command:   %lg\n", i, SPU->cmds[i]);
+    }
+}
+
 void add_f(SPU_t *SPU)
 {
     double a = NAN;
@@ -347,7 +372,6 @@ void Run(SPU_t *SPU)
             "--------------\n");
             break;
         }
-        
     }
 }
 

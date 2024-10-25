@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(void)
 {
@@ -20,11 +21,21 @@ int main(void)
     double array[10];
     char signat[5] = {'\0'};
     fread(signat, sizeof(char), 4, read_binfile);
-    fprintf(stderr,"%s\n", signat);
+    //fprintf(stderr,"%s\n", signat);
     fread(array, sizeof(double), 10, read_binfile);
-    for (int i = 0; i < 10; i++)
+    //for (int i = 0; i < 10; i++)
+    //{
+      //  fprintf(stderr, "%lg ", array[i]);
+    //}
+    if (strchr("NEXT:", ':') == NULL)
     {
-        fprintf(stderr, "%lg ", array[i]);
+        fprintf(stderr, "TRUE");
     }
+    if (strchr("NEXT:", ':') != NULL)
+    {
+        fprintf(stderr, "FALSE");
+    }
+    
+    fprintf(stderr, "result: >>%c<<", *(strchr("NEXT:", ':')));
     
 }

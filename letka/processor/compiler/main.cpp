@@ -20,5 +20,9 @@ int main(int argc, const char *argv[])
     }
     fprintf(stderr, "InputFile: %s\n OutputFile: %s\n", InputFile, OutputFile);
 
-    MakeMachCode(InputFile, OutputFile, "logfile.txt");
+    labelArray_t labels;
+    LabelCtor(&labels, amount_of_labels);
+    
+    MakeMachCode(InputFile, OutputFile, "logfile.txt", 1, &labels);
+    MakeMachCode(InputFile, OutputFile, "logfile.txt", 2, &labels);
 }
