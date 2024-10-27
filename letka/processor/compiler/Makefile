@@ -4,11 +4,11 @@ CC = g++
 
 all: hello
 
-hello: main.o assembler.o
-	$(CC) main.o assembler.o -o assembly 
+hello:    main.o assembler.o ../onegin/ForIndexes.o
+	$(CC) main.o assembler.o ../onegin/ForIndexes.o -o assembly 
 
-%.o: %.cpp
+%.o: cppfiles/%.cpp
 	$(CC) -c $(CFLAFS) $< 
 
 clean:
-	rm -rf *.o *. assembly
+	rm -rf *.o *. 

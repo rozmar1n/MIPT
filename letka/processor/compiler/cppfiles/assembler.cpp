@@ -1,5 +1,6 @@
-#include"assembler.h"
-
+#include"../headers/assembler.h"
+//TODO: сделать битовые маски
+//TODO: сделать видеопамять
 void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logFile, int iter, labelArray_t* labels)
 {      
 
@@ -9,16 +10,19 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         fprintf(stderr, "We couldn't open you logFile!!!\n");
         return;
     }
-    
-    FILE* asmFile = fopen(ProgramFile, "r");
-    if (asmFile == 0)
-    {
-        fprintf(stderr, "We couldn't open your asmFile!!!\n");
-        return;
-    }
+
+    long temp_size;
+    char* cmd_buffer = PutText(ProgramFile, &temp_size);
+    int amountOfComands = 0;
+fprintf(stderr, "temp_size: %ld\n", temp_size);
+    Strings* cmds_indexes = MakeIndex(cmd_buffer, &amountOfComands, temp_size);
+fprintf(stderr, "problem not in MakeIndex\n");
+    int assmIp = 0;
+
 
     fprintf(machFile, "%s\n", "ROST");
     fprintf(machFile, "%d\n", ass_version);
+
     long int txt_sizeptr = ftell(machFile);
 
         double* cmd_array = (double*)calloc(1024, sizeof(double));
@@ -30,28 +34,25 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
     }
     fprintf(machFile, "\n");
 
-    char cmd[128];
+    char* cmd = NULL;
     int err = 1;
     u_int32_t nComands = 0;
 
-//TODO: хэдер под  команды
-//TODO: вынести массив структур с командами (instruction).
-
-    while (err)
+fprintf(stderr, "before while\n");
+    while(err)
     {
-        err = fscanf(asmFile, "%s", cmd);//TODO: check 10 symbols //fgets or make buffer for full code 
+        cmd = cmds_indexes[assmIp++].string_start; 
+
         fprintf(stderr, "%s\n", cmd);
         if (strcmp(cmd, "push") == 0)
         {
-            
-            
-            if(err) err = fscanf(asmFile, "%s", cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
             int reg = -1;
             reg = FillReg(cmd);
             if (reg != -1)
             {
-                fprintf(machFile, "%d ", _cmd_pushr);
-                cmd_array[cmd_counter] = _cmd_pushr;
+                fprintf(machFile, "%d ", cmd_pushr);
+                cmd_array[cmd_counter] = cmd_pushr;
                 cmd_counter++;
 
                 fprintf(machFile, "%d ", reg);
@@ -60,8 +61,9 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
             }
             else
             {
-                fprintf(machFile, "%d ", _cmd_push);
-                cmd_array[cmd_counter] = (u_int32_t)_cmd_push;
+                fprintf(machFile, "%d ", cmd_push);
+                
+                cmd_array[cmd_counter] = (u_int32_t)cmd_push;
                 cmd_counter++;
                 
                 fprintf(machFile, "%s ", cmd);
@@ -74,12 +76,12 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
 
         if (strcmp(cmd, "pop") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_pop);
+            if(err) err = fprintf(machFile, "%d ", cmd_pop);
             
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_pop;
+            cmd_array[cmd_counter] = (u_int32_t)cmd_pop;
                 cmd_counter++;
             
-            if(err) err = fscanf(asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
 
             int reg = -1;
             reg = FillReg(cmd);
@@ -91,123 +93,115 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
             }
             else
             {
-                fprintf(machFile, "%d ", _cmd_push);
-                cmd_array[cmd_counter] = (u_int32_t)_cmd_push;
-                cmd_counter++;
-
-                fprintf(machFile, "%s ", cmd);
-                cmd_array[cmd_counter] = atof(cmd);
-                cmd_counter++;
+                fprintf(stderr, "UNDEFINED COMMAND!!!\n");
             }
-            
-
-            
             nComands += 2;
             continue;
         }
         if (strcmp(cmd, "add") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_add);
+            if(err) err = fprintf(machFile, "%d ", cmd_add);
             
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_add;
-                cmd_counter++;
+            int temp_cmd = cmd_add;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
+            
             
             nComands++;
             continue;
         }
         if (strcmp(cmd, "sub") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_sub);
+            if(err) err = fprintf(machFile, "%d ", cmd_sub);
             
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_sub;
-                cmd_counter++;
+            int temp_cmd = cmd_sub;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             
             nComands++;
             continue;
         }
         if (strcmp(cmd, "mul") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_mul);
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_mul;
-                cmd_counter++;
+            if(err) err = fprintf(machFile, "%d ", cmd_mul);
+            int temp_cmd = cmd_mul;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             nComands++;
             continue;
         }
         if (strcmp(cmd, "div") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_div);
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_div;
-                cmd_counter++;
+            if(err) err = fprintf(machFile, "%d ", cmd_div);
+            int temp_cmd = cmd_div;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             nComands++;
             continue;
         }
         if (strcmp(cmd, "out") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_out);
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_out;
-                cmd_counter++;
+            if(err) err = fprintf(machFile, "%d ", cmd_out);
+            int temp_cmd = cmd_out;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             nComands++;
             continue;
         }
         if (strcmp(cmd, "in") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_in);
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_in;
-                cmd_counter++;
+            if(err) err = fprintf(machFile, "%d ", cmd_in);
+            int temp_cmd = cmd_in;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             nComands++;
             continue;
         }
         if (strcmp(cmd, "sqrt") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_sqrt);
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_sqrt;
-                cmd_counter++;
+            if(err) err = fprintf(machFile, "%d ", cmd_sqrt);
+            int temp_cmd = cmd_sqrt;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             nComands++;
             continue;
         }
         if (strcmp(cmd, "sin") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_sin);
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_sin;
-                cmd_counter++;
+            if(err) err = fprintf(machFile, "%d ", cmd_sin);
+            int temp_cmd = cmd_sin;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             nComands++;
             continue;
         }
         if (strcmp(cmd, "cos") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_cos);
+            if(err) err = fprintf(machFile, "%d ", cmd_cos);
             
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_cos;
-                cmd_counter++;
+            int temp_cmd = cmd_cos;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             
             nComands++;
             continue;
         }
         if (strcmp(cmd, "dump") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_dump);
-            cmd_array[cmd_counter] = (u_int32_t)_cmd_dump;
-                cmd_counter++;
+            if(err) err = fprintf(machFile, "%d ", cmd_dump);
+            int temp_cmd = cmd_dump;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             nComands++;
             continue;
         }
         if (strcmp(cmd, "hlt") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_hlt);
+            if(err) err = fprintf(machFile, "%d ", cmd_hlt);
             
-            cmd_array[cmd_counter] = _cmd_hlt;
-                cmd_counter++;
+            int temp_cmd = cmd_hlt;
+            memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(double));
             
             nComands++;
-            err = 0;
+            //err = 0;
             continue;
         }
         if (strcmp(cmd, "jmp") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_jmp);
-            cmd_array[cmd_counter] = _cmd_jmp;
+            if(err) err = fprintf(machFile, "%d ", cmd_jmp);
+            cmd_array[cmd_counter] = cmd_jmp;
                 cmd_counter++;
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
 
             if (strchr(cmd, ':'))
             {
@@ -227,10 +221,10 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         }
         if (strcmp(cmd, "ja") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_ja);
-            cmd_array[cmd_counter] = _cmd_ja;
+            if(err) err = fprintf(machFile, "%d ", cmd_ja);
+            cmd_array[cmd_counter] = cmd_ja;
                 cmd_counter++;
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
 
             if (strchr(cmd, ':'))
             {
@@ -250,10 +244,10 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         }
         if (strcmp(cmd, "jae") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_jae);
-            cmd_array[cmd_counter] = _cmd_jae;
+            if(err) err = fprintf(machFile, "%d ", cmd_jae);
+            cmd_array[cmd_counter] = cmd_jae;
                 cmd_counter++;
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
 
             if (strchr(cmd, ':'))
             {
@@ -274,10 +268,10 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         }
         if (strcmp(cmd, "jb") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_jb);
-            cmd_array[cmd_counter] = _cmd_jb;
+            if(err) err = fprintf(machFile, "%d ", cmd_jb);
+            cmd_array[cmd_counter] = cmd_jb;
                 cmd_counter++;
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
             if (strchr(cmd, ':'))
             {
                 cmd_array[cmd_counter] = TakeLabel(labels, cmd);
@@ -296,10 +290,10 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         }
         if (strcmp(cmd, "jbe") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_jbe);
-            cmd_array[cmd_counter] = _cmd_jbe;
+            if(err) err = fprintf(machFile, "%d ", cmd_jbe);
+            cmd_array[cmd_counter] = cmd_jbe;
                 cmd_counter++;
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
 
             if (strchr(cmd, ':'))
             {
@@ -320,10 +314,10 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         }
         if (strcmp(cmd, "je") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_je);
-            cmd_array[cmd_counter] = _cmd_je;
+            if(err) err = fprintf(machFile, "%d ", cmd_je);
+            cmd_array[cmd_counter] = cmd_je;
                 cmd_counter++;
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
 
             if (strchr(cmd, ':'))
             {
@@ -344,10 +338,10 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
         }
         if (strcmp(cmd, "jne") == 0)
         {
-            if(err) err = fprintf(machFile, "%d ", _cmd_jne);
-            cmd_array[cmd_counter] = _cmd_jne;
+            if(err) err = fprintf(machFile, "%d ", cmd_jne);
+            cmd_array[cmd_counter] = cmd_jne;
                 cmd_counter++;
-            if(err) err = fscanf (asmFile,  "%s" , cmd);
+            cmd = cmds_indexes[assmIp++].string_start;
 
             if (strchr(cmd, ':'))
             {
@@ -388,7 +382,6 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
     fprintf(machFile, "%0*x\n", 8, nComands);
     
     fclose(machFile);
-    fclose(asmFile);
 
     fprintf(stderr, "first dump: \n");
     LabelDump(labels);
@@ -425,13 +418,13 @@ int FillReg(char* cmd)
 
 void BinWrite(double* cmd_array, const char* BinFileName, u_int32_t nComands)
 {
-    FILE* binFile = fopen(BinFileName, "wb"); assert(binFile);
+    FILE* binFile = fopen(BinFileName, "wb"); assert(binFile);//TODO: обработать fopen без ассерта 
     
-    fwrite(&signatura, sizeof(u_int32_t), 1, binFile);
+    fwrite(&signatura, sizeof(u_int32_t), 1, binFile); //TODO: if(fwrite == 0) goto close
     fwrite(&ass_version, sizeof(int), 1, binFile);
     fwrite(&nComands, sizeof(u_int32_t), 1, binFile);
 
-    fwrite(cmd_array, sizeof(double), nComands, binFile);
+    fwrite(cmd_array, sizeof(double), nComands, binFile);//TODO: обработать 
     fclose(binFile);
     
     fprintf(stderr, "\n\n\n\t\033[46mArrayDump\033[0m\n");
@@ -507,4 +500,9 @@ int    IsLabel (labelArray_t* lblarr, char* labelName)
         }
     }
     return 0;
+}
+
+void WritePushArgs(char* cmd)
+{
+
 }

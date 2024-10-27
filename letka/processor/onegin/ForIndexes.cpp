@@ -5,53 +5,47 @@
 #include"ForIndexes.h"
 #include"struct.h"
 
-Strings* MakeIndex(char* textik, int* AmountOfLines, int TextSize, int* MaxLine)
+Strings* MakeIndex(char* textik, int* AmountOfLines, long TextSize)
 {
-    char symbol              = '\0';
-    int nstrings             = 0;
+    int nstrings          = 0;
 
-    Strings *strings_in_func = (Strings*)calloc(1, sizeof(Strings));
-
+    Strings *strings_in_func = (Strings*)calloc(TextSize, sizeof(Strings));
+fprintf(stderr, "\nзаколлочено!\n");
     ((strings_in_func + 0) -> string_start) = textik;
 
-    int ThatString = 0;
-    int MaxString = 0;
-    
+    int ThisStringLength = 0;
+    int inCmd            = 0;
+
     for (size_t i = 0; i < TextSize; i++)
     {
-        symbol = textik[i];
-        ThatString += 1;
-        if (symbol != '\r')
+        if (textik[i] == '\n' || textik[i] == '\r' || isspace(textik[i]) || textik[i] == '\0')
         {
-            if (symbol == '\n' || symbol == '\0' || isspace(symbol))
+            textik[i] = '\0';
+            if (inCmd)
             {
-                
-                strings_in_func[nstrings].string_size = ThatString - 1;
+                strings_in_func[nstrings].string_size = ThisStringLength;
+                ThisStringLength = 0;
                 nstrings++;
-                
                 textik[i] = '\0';
-                strings_in_func[nstrings].string_start = &(textik[i + 1]);
-                
-                if (MaxString < ThatString)
-                {
-                    MaxString = ThatString; 
-                }
-                ThatString = 0;   
             }
+            inCmd = 0;
         }
         else
         {
-            textik[i] = '\0';
+            if (inCmd)
+            {
+                ThisStringLength++;
+            }
+            else
+            {
+                strings_in_func[nstrings].string_start = &(textik[i]);
+            }
+            inCmd = 1;
         }
-        if (i != TextSize)
-        {
-            strings_in_func = (Strings*)realloc(strings_in_func, (nstrings + 2)*sizeof(Strings)); 
-        }
-
     }
 
+    //strings_in_func = (Strings*)realloc(strings_in_func, nstrings*sizeof(Strings));
     *AmountOfLines = nstrings;
-    *MaxLine = MaxString;
     return strings_in_func;
 }
 

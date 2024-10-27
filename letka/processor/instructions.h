@@ -5,29 +5,31 @@
 
 const u_int32_t signatura = 82798384;
 
+//TODO: массив структур для названия команды в ассемблере, в коде и ее номер 
+
 enum instruction_t
 {
-    _cmd_push  =  1,
-    _cmd_add   =  2,
-    _cmd_sub   =  3,
-    _cmd_mul   =  4,
-    _cmd_div   =  5,
-    _cmd_out   =  6,
-    _cmd_in    =  7,
-    _cmd_sqrt  =  8,
-    _cmd_sin   =  9,
-    _cmd_cos   = 10,
-    _cmd_dump  = 11,
-    _cmd_pop   = 12,
-    _cmd_jmp   = 13,
-    _cmd_ja    = 14,
-    _cmd_jae   = 15,
-    _cmd_jb    = 16,
-    _cmd_jbe   = 17,
-    _cmd_je    = 18,
-    _cmd_jne   = 19,
-    _cmd_pushr = 20,
-    _cmd_hlt   = -1
+    cmd_push  =  1,
+    cmd_add   =  2,
+    cmd_sub   =  3,
+    cmd_mul   =  4,
+    cmd_div   =  5,
+    cmd_out   =  6,
+    cmd_in    =  7,
+    cmd_sqrt  =  8,
+    cmd_sin   =  9,
+    cmd_cos   = 10,
+    cmd_dump  = 11,
+    cmd_pop   = 12,
+    cmd_jmp   = 13,
+    cmd_ja    = 14,
+    cmd_jae   = 15,
+    cmd_jb    = 16,
+    cmd_jbe   = 17,
+    cmd_je    = 18,
+    cmd_jne   = 19,
+    cmd_pushr = 20,
+    cmd_hlt   = -1
 
 };
 

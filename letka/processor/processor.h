@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 const int nRegisters = 8;
+const int procVersion = 2;
 
 // enum instruction //TODO:  command || instruction
 // {
@@ -41,7 +42,7 @@ struct SPU_t
     double* cmds;
     int     ip;
     Stack_t stk;
-    int*    registers;
+    double*    registers;
 };
 
 void  MakeSPU    (const char *cmdFile, SPU_t *SPU);

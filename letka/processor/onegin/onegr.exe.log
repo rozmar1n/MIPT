@@ -1,0 +1,662 @@
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DC94 в функции OutputStrings(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x109C4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DC94 in D:\codes\letka\onegin\onegr.exe: OutputStrings()
+# 1 0x0041C88F in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:27:37, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:27:45
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DC94 в функции OutputStrings(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x109C4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DC94 in D:\codes\letka\onegin\onegr.exe: OutputStrings()
+# 1 0x0041C88F in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:27:37, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:27:45
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DC94 в функции OutputStrings(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0xF988 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DC94 in D:\codes\letka\onegin\onegr.exe: OutputStrings()
+# 1 0x0041C88F in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:32:41, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:32:46
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DC94 в функции OutputStrings(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0xF988 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DC94 in D:\codes\letka\onegin\onegr.exe: OutputStrings()
+# 1 0x0041C88F in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:32:41, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:32:46
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x76A19F00 в функции puts(). Попытка прочесть данные по адресу 0x00000023 в модуле C:\WINDOWS\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0xF0FC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x76A19F00 in C:\WINDOWS\System32\msvcrt.dll: puts()
+# 1 0x0041DC9C in D:\codes\letka\onegin\onegr.exe: OutputStrings()
+# 2 0x0041C88F in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:39:36, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:42:04
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x76A19F00 в функции puts(). Попытка прочесть данные по адресу 0x00000023 в модуле C:\WINDOWS\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0xF0FC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x76A19F00 in C:\WINDOWS\System32\msvcrt.dll: puts()
+# 1 0x0041DC9C in D:\codes\letka\onegin\onegr.exe: OutputStrings()
+# 2 0x0041C88F in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:39:36, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:42:04
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x13864 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1DB in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:56:59
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x13864 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1DB in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 17:56:59
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x14B60 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1DB in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:02:37
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x14B60 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1DB in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:02:37
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x14D44 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1DB in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:03:48
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x14D44 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1DB in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:03:48
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x1526C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1FA in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:04:41
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DEBA в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x1526C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DEBA in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E1FA in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C8C3 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 17:56:56, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:04:41
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DDBE в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x16A10 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DDBE in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E0FE in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C893 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 18:14:53, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:16:19
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DDBE в функции Comparator_1(). Попытка прочесть данные по адресу NULL в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x16A10 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DDBE in D:\codes\letka\onegin\onegr.exe: Comparator_1()
+# 1 0x0041E0FE in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C893 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 18:14:53, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:16:19
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DD75 в функции Swapstring(). Попытка прочесть данные по адресу 0x00001570 в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x17974 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DD75 in D:\codes\letka\onegin\onegr.exe: Swapstring()
+# 1 0x0041E12B in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C893 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 18:21:50, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:21:52
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\codes\letka\onegin\onegr.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0041DD75 в функции Swapstring(). Попытка прочесть данные по адресу 0x00001570 в модуле D:\codes\letka\onegin\onegr.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400], Instance: 0x004F52FC (32-bit), Flags: Cmdre0, Thread: 0x17974 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0041DD75 in D:\codes\letka\onegin\onegr.exe: Swapstring()
+# 1 0x0041E12B in D:\codes\letka\onegin\onegr.exe: TextSort()
+# 2 0x0041C893 in D:\codes\letka\onegin\onegr.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 173, Date: 2024-06-23 22:37:05 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\program files\codeblocks\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2024 18:21:50, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Sep 25 2024 18:21:52
+
+Run file:	D:\codes\letka\onegin\onegr.exe
+Directory:	D:\codes\letka\onegin
+
+--------------------------------------------------

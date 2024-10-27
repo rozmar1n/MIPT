@@ -64,23 +64,34 @@ void  MakeBinSPU (const char *binFile, SPU_t *SPU)
     
     u_int32_t signature = 0;
     fread(&signature, sizeof(u_int32_t), 1, machCode);
-    fprintf(stderr, "signature: %u\n", signature);
-
+    //fprintf(stderr, "signature: %u\n", signature);
+    if (signature != signatura)
+    {
+        fprintf(stderr, "THIS SPU CANNOT WORK WITH THIS FILES\n");
+        assert(signature != signatura);
+    }
+    
     int ass_version = 0;
     fread(&ass_version, sizeof(int), 1, machCode);
-    fprintf(stderr, "ass_version: %d\n", ass_version);
+    if (ass_version != procVersion)
+    {
+        fprintf(stderr, "THIS SPU CANNOT WORK WITH "
+                        "THIS VERSION OF ASSEMBLY\n");
+        assert(ass_version != procVersion);
+    }
+    //fprintf(stderr, "ass_version: %d\n", ass_version);
 
     u_int32_t nComands = 0;
     fread(&nComands, sizeof(u_int32_t), 1, machCode);
-    fprintf(stderr, "nCommands: %u\n", nComands);
+    //fprintf(stderr, "nCommands: %u\n", nComands);
 
     SPU->cmds = (double*)calloc(nComands, sizeof(double));
 
     fread(SPU->cmds, sizeof(double), nComands, machCode);
-    for (size_t i = 0; i < nComands; i++)
-    {
-        fprintf(stderr, "%2lu. command:   %lg\n", i, SPU->cmds[i]);
-    }
+    // for (size_t i = 0; i < nComands; i++)
+    // {
+    //     fprintf(stderr, "%2lu. command:   %lg\n", i, SPU->cmds[i]);
+    // }
 }
 
 void add_f(SPU_t *SPU)
@@ -122,6 +133,8 @@ void ja_f(SPU_t *SPU)
         int temp_ip = SPU->cmds[SPU->ip+1];
         SPU->ip = temp_ip;
     }
+    else
+        SPU->ip++;
 }
 
 void jae_f(SPU_t *SPU)
@@ -135,6 +148,8 @@ void jae_f(SPU_t *SPU)
         int temp_ip = SPU->cmds[SPU->ip+1];
         SPU->ip = temp_ip;
     }
+    else
+        SPU->ip++;
 }
 
 void jb_f(SPU_t *SPU)
@@ -148,6 +163,8 @@ void jb_f(SPU_t *SPU)
         int temp_ip = SPU->cmds[SPU->ip+1];
         SPU->ip = temp_ip;
     }
+    else
+        SPU->ip++;
 }
 
 void jbe_f(SPU_t *SPU)
@@ -161,6 +178,8 @@ void jbe_f(SPU_t *SPU)
         int temp_ip = SPU->cmds[SPU->ip+1];
         SPU->ip = temp_ip;
     }
+    else
+        SPU->ip++;
 }
 
 void je_f(SPU_t *SPU)
@@ -174,6 +193,8 @@ void je_f(SPU_t *SPU)
         int temp_ip = SPU->cmds[SPU->ip+1];
         SPU->ip = temp_ip;
     }
+    else
+        SPU->ip++;
 }
 
 void jne_f(SPU_t *SPU)
@@ -187,6 +208,8 @@ void jne_f(SPU_t *SPU)
         int temp_ip = SPU->cmds[SPU->ip+1];
         SPU->ip = temp_ip;
     }
+    else
+        SPU->ip++;
 }
 
 void div_f(SPU_t *SPU)
@@ -254,13 +277,13 @@ void out_f(SPU_t *SPU)
     double a = NAN;
     StackPop(&(SPU->stk), &a);
     assert(a != NAN);
-    printf("%lg\n", a);
+    fprintf(stderr, "%lg\n", a);
     SPU->ip += 1;
 }
 
 void pushr_f(SPU_t *SPU)
 {
-    StackPush(&SPU->stk, SPU->registers[(int)(SPU->ip + 1)]);
+    StackPush(&SPU->stk, SPU->registers[(long long int)(SPU->cmds[SPU->ip + 1])]);
     SPU->ip += 2;
 }
 
@@ -268,8 +291,8 @@ void pop_f(SPU_t *SPU)
 {
     double a = 0;
     StackPop(&SPU->stk, &a);
-    SPU->registers[(int)(SPU->ip + 1)] = a;
-    SPU->ip += 1;
+    SPU->registers[(long long int)(SPU->cmds[SPU->ip + 1])] = a;
+    SPU->ip += 2;
 }
 void Run(SPU_t *SPU)
 {
@@ -279,90 +302,90 @@ void Run(SPU_t *SPU)
         //fprintf(stderr, "cmd: %d\n", (int)code[ip]);
         switch ((int)SPU->cmds[SPU->ip])
         {
-        case _cmd_push: {
+        case cmd_push: {
             StackPush(&(SPU->stk), SPU->cmds[SPU->ip+1]);
             SPU->ip += 2;
             break;
         }
-        case _cmd_add: {
+        case cmd_add: {
             add_f(SPU);
             break;
         }
-        case _cmd_sub: {
+        case cmd_sub: {
             sub_f(SPU);
             break;
         }
-        case _cmd_div: {
+        case cmd_div: {
             div_f(SPU);
             break;
         }    
-        case _cmd_mul: {
+        case cmd_mul: {
             mul_f(SPU);
             break;
         }
-        case _cmd_sqrt: {
+        case cmd_sqrt: {
             sqrt_f(SPU);
             break;
         }
-        case _cmd_sin: {
+        case cmd_sin: {
             sin_f(SPU);
             break;
         }
-        case _cmd_cos: {
+        case cmd_cos: {
             cos_f(SPU);
             break;
         }
-        case _cmd_hlt: {
+        case cmd_hlt: {
             StackDtor(&(SPU->stk));
             runCond = 1;
             break;
         }
-        case _cmd_dump: {
+        case cmd_dump: {
             StackDump(&(SPU->stk));//TODO: написать нормальный дамп
             SPU->ip += 1;
             break;
         }
-        case _cmd_in: {
+        case cmd_in: {
             in_f(SPU);
             break;
         }
-        case _cmd_out: {
+        case cmd_out: {
             out_f(SPU);
             break;
         }
-        case _cmd_pushr: {
+        case cmd_pushr: {
             pushr_f(SPU);
             break;
         }
-        case _cmd_pop: {
+        case cmd_pop: {
             pop_f(SPU);
             break;
         }
-        case _cmd_jmp: {
+        case cmd_jmp: {
             jmp_f(SPU);
             break;
         }
-        case _cmd_ja: {
+        case cmd_ja: {
             ja_f(SPU);
             break;
         }
-        case _cmd_jae: {
+        case cmd_jae: {
             jae_f(SPU);
             break;
         }
-        case _cmd_jb: {
+        case cmd_jb: {
             jb_f(SPU);
             break;
         }
-        case _cmd_jbe: {
+        case cmd_jbe: {
             jbe_f(SPU);
             break;
         }
-        case _cmd_je: {
+        case cmd_je: {
             je_f(SPU);
             break;
         }
-        case _cmd_jne: {
+        case cmd_jne: {
             jne_f(SPU);
             break;
         }
@@ -384,6 +407,6 @@ SPU_t MakeNullSPU()
     NullSPU.cmds      = NULL;
     NullSPU.ip        = 0;
     NullSPU.stk       = null_stk;
-    NullSPU.registers = (int*)calloc(nRegisters, sizeof(int));
+    NullSPU.registers = (double*)calloc(nRegisters, sizeof(double));
     return NullSPU;
 }

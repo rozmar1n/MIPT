@@ -5,7 +5,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "../instructions.h"
+#include <memory.h>
+#include "../../instructions.h"
+#include "../../onegin/ForIndexes.h"
+#include "../../onegin/struct.h"
+
 
 const int       ass_version      = 2;
 const size_t    max_label_name   = 128;
@@ -28,6 +32,8 @@ void   MakeMachCode(const char* ProgrammFile, const char* cmdFile, const char* l
 void   BinWrite(double* cmd_array, const char* BinFileName, u_int32_t nComands);
 
 int    FillReg(char* cmd);
+void   WritePushArgs(char* cmd);
+
 
 void   LabelCtor  (labelArray_t* lblarr, int nlabels);
 void   LabelDtor  (labelArray_t* lblarr);
