@@ -29,18 +29,18 @@ struct labelArray_t
 };
 
 void   MakeMachCode(const char* ProgrammFile, const char* cmdFile, const char* logFile, int iter, labelArray_t* labels);
-void   BinWrite(double* cmd_array, const char* BinFileName, u_int32_t nComands);
+void   BinWrite    (double* cmd_array, const char* BinFileName, u_int32_t nComands);
 
 int    FillReg(char* cmd);
-void   WritePushArgs(char* cmd);
-
+int    WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter, u_int32_t *nCommands);
+int    WritePopArgs (char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter, u_int32_t *nCommands);
 
 void   LabelCtor  (labelArray_t* lblarr, int nlabels);
 void   LabelDtor  (labelArray_t* lblarr);
 void   LabelDump  (labelArray_t* lblarr);
 void   MakeLabel  (labelArray_t* lblarr, char* labelName, int lineNumber);
 double TakeLabel  (labelArray_t* lblarr, char* labelName);
-int    IsLabel (labelArray_t* lblarr, char* labelName);
+int    IsLabel    (labelArray_t* lblarr, char* labelName);
 
 
 #endif //assm_h

@@ -27,15 +27,7 @@ int main(void)
     //{
       //  fprintf(stderr, "%lg ", array[i]);
     //}
-    if (strchr("NEXT:", ':') == NULL)
-    {
-        fprintf(stderr, "TRUE");
-    }
-    if (strchr("NEXT:", ':') != NULL)
-    {
-        fprintf(stderr, "FALSE");
-    }
-    
-    fprintf(stderr, "result: >>%c<<", *(strchr("NEXT:", ':')));
+    long long int test_lli = 28; 
+    fprintf(stderr, "%llx", test_lli);
     
 }

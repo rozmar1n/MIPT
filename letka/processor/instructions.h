@@ -9,28 +9,37 @@ const u_int32_t signatura = 82798384;
 
 enum instruction_t
 {
-    cmd_push  =  1,
-    cmd_add   =  2,
-    cmd_sub   =  3,
-    cmd_mul   =  4,
-    cmd_div   =  5,
-    cmd_out   =  6,
-    cmd_in    =  7,
-    cmd_sqrt  =  8,
-    cmd_sin   =  9,
-    cmd_cos   = 10,
-    cmd_dump  = 11,
-    cmd_pop   = 12,
-    cmd_jmp   = 13,
-    cmd_ja    = 14,
-    cmd_jae   = 15,
-    cmd_jb    = 16,
-    cmd_jbe   = 17,
-    cmd_je    = 18,
-    cmd_jne   = 19,
-    cmd_pushr = 20,
-    cmd_hlt   = -1
+    cmd_push           =  1,
+    cmd_pushr          =  2,
+    cmd_push_pushr     =  3,
+    cmd_ram_push       =  5,
+    cmd_ram_pushr      =  6,
+    cmd_ram_push_pushr =  7,
 
+    cmd_pop_r          = 8,
+    cmd_pop_m          = 12,
+    cmd_pop_m_r        = 14,
+    cmd_pop_mpr        = 13,
+    cmd_pop_mpm        = 15,
+
+    cmd_add            =  28,
+    cmd_sub            =  29,
+    cmd_mul            =  30,
+    cmd_div            =  31,
+    cmd_out            =  32,
+    cmd_in             =  33,
+    cmd_sqrt           =  34,
+    cmd_sin            =  35,
+    cmd_cos            =  36,
+    cmd_dump           =  37,
+    cmd_jmp            =  39 ,
+    cmd_ja             =  40,
+    cmd_jae            =  41,
+    cmd_jb             =  42,
+    cmd_jbe            =  43,
+    cmd_je             =  44,
+    cmd_jne            =  45,
+    cmd_hlt            = -1
 };
 
 enum registr_t

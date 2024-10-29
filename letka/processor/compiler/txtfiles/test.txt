@@ -1,0 +1,10 @@
+pop bx
+pop [100]
+pop [cx]
+pop [cx+100]
+pop [100+100]
+
+hlt
+
+
+

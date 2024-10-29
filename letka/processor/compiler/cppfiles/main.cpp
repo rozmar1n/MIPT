@@ -2,8 +2,8 @@
 
 int main(int argc, const char *argv[])
 {
-    char InputFile[20];
-    char OutputFile[20];
+    char InputFile[128];
+    char OutputFile[128];
     
     if (argc > 1)
     {
@@ -11,18 +11,18 @@ int main(int argc, const char *argv[])
         if (argc > 2)
             strcpy(OutputFile, argv[2]);
         else
-            strcpy(OutputFile, "new_program.bin");
+            strcpy(OutputFile, "txtfiles/new_program.bin");
     }
     else
     {
-        strcpy(InputFile, "default.txt");
-        strcpy(OutputFile, "new_program.bin");
+        strcpy(InputFile, "txtfiles/default.txt");
+        strcpy(OutputFile, "txtfiles/new_program.bin");
     }
     fprintf(stderr, "InputFile: %s\n OutputFile: %s\n", InputFile, OutputFile);
 
     labelArray_t labels;
     LabelCtor(&labels, amount_of_labels);
     
-    MakeMachCode(InputFile, OutputFile, "logfile.txt", 1, &labels);
-    MakeMachCode(InputFile, OutputFile, "logfile.txt", 2, &labels);
+    MakeMachCode(InputFile, OutputFile, "txtfiles/logfile.txt", 1, &labels);
+    MakeMachCode(InputFile, OutputFile, "txtfiles/logfile.txt", 2, &labels);
 }

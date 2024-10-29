@@ -10,7 +10,7 @@ Strings* MakeIndex(char* textik, int* AmountOfLines, long TextSize)
     int nstrings          = 0;
 
     Strings *strings_in_func = (Strings*)calloc(TextSize, sizeof(Strings));
-fprintf(stderr, "\nзаколлочено!\n");
+//fprintf(stderr, "\nзаколлочено!\n");
     ((strings_in_func + 0) -> string_start) = textik;
 
     int ThisStringLength = 0;
