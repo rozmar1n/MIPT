@@ -299,101 +299,120 @@ void Run(SPU_t *SPU)
     int runCond = 0;
     while(runCond == 0)
     {
-        //fprintf(stderr, "cmd: %d\n", (int)code[ip]);
-        switch ((int)SPU->cmds[SPU->ip])
-        {
-        case cmd_push: {
-            StackPush(&(SPU->stk), SPU->cmds[SPU->ip+1]);
-            SPU->ip += 2;
-            break;
+        fprintf(stderr, "cmd: %d\n", (int)SPU->cmds[SPU->ip]);
+        if (((u_int64_t)SPU->cmds[SPU->ip] & 32))
+        {        
+            fprintf(stderr, "URA!!!\n");
+            switch ((int)SPU->cmds[SPU->ip])
+            {
+            // case cmd_push: {
+            //     StackPush(&(SPU->stk), SPU->cmds[SPU->ip+1]);
+            //     SPU->ip += 2;
+            //     break;
+            // }
+            case cmd_add: {
+                add_f(SPU);
+                break;
+            }
+            case cmd_sub: {
+                sub_f(SPU);
+                break;
+            }
+            case cmd_div: {
+                div_f(SPU);
+                break;
+            }    
+            case cmd_mul: {
+                mul_f(SPU);
+                break;
+            }
+            case cmd_sqrt: {
+                sqrt_f(SPU);
+                break;
+            }
+            case cmd_sin: {
+                sin_f(SPU);
+                break;
+            }
+            case cmd_cos: {
+                cos_f(SPU);
+                break;
+            }
+            case cmd_hlt: {
+                StackDtor(&(SPU->stk));
+                runCond = 1;
+                break;
+            }
+            case cmd_dump: {
+                StackDump(&(SPU->stk));//TODO: написать нормальный дамп
+                SPU->ip += 1;
+                break;
+            }
+            case cmd_in: {
+                in_f(SPU);
+                break;
+            }
+            case cmd_out: {
+                out_f(SPU);
+                break;
+            }
+            case cmd_pushr: {
+                pushr_f(SPU);
+                break;
+            }
+            // case cmd_pop: {
+            //     pop_f(SPU);
+            //     break;
+            // }
+            case cmd_jmp: {
+                jmp_f(SPU);
+                break;
+            }
+            case cmd_ja: {
+                ja_f(SPU);
+                break;
+            }
+            case cmd_jae: {
+                jae_f(SPU);
+                break;
+            }
+            case cmd_jb: {
+                jb_f(SPU);
+                break;
+            }
+            case cmd_jbe: {
+                jbe_f(SPU);
+                break;
+            }
+            case cmd_je: {
+                je_f(SPU);
+                break;
+            }
+            case cmd_jne: {
+                jne_f(SPU);
+                break;
+            }
+            default: 
+                fprintf(stderr, 
+                "\n------------------Invalid command"
+                "--------------\n");
+                exit(0);
+                break;
+            }
         }
-        case cmd_add: {
-            add_f(SPU);
-            break;
-        }
-        case cmd_sub: {
-            sub_f(SPU);
-            break;
-        }
-        case cmd_div: {
-            div_f(SPU);
-            break;
-        }    
-        case cmd_mul: {
-            mul_f(SPU);
-            break;
-        }
-        case cmd_sqrt: {
-            sqrt_f(SPU);
-            break;
-        }
-        case cmd_sin: {
-            sin_f(SPU);
-            break;
-        }
-        case cmd_cos: {
-            cos_f(SPU);
-            break;
-        }
-        case cmd_hlt: {
-            StackDtor(&(SPU->stk));
-            runCond = 1;
-            break;
-        }
-        case cmd_dump: {
-            StackDump(&(SPU->stk));//TODO: написать нормальный дамп
-            SPU->ip += 1;
-            break;
-        }
-        case cmd_in: {
-            in_f(SPU);
-            break;
-        }
-        case cmd_out: {
-            out_f(SPU);
-            break;
-        }
-        case cmd_pushr: {
-            pushr_f(SPU);
-            break;
-        }
-        case cmd_pop: {
-            pop_f(SPU);
-            break;
-        }
-        case cmd_jmp: {
-            jmp_f(SPU);
-            break;
-        }
-        case cmd_ja: {
-            ja_f(SPU);
-            break;
-        }
-        case cmd_jae: {
-            jae_f(SPU);
-            break;
-        }
-        case cmd_jb: {
-            jb_f(SPU);
-            break;
-        }
-        case cmd_jbe: {
-            jbe_f(SPU);
-            break;
-        }
-        case cmd_je: {
-            je_f(SPU);
-            break;
-        }
-        case cmd_jne: {
-            jne_f(SPU);
-            break;
-        }
-        default: 
-            fprintf((SPU->stk).logfile, 
-            "\n------------------Invalid command"
-            "--------------\n");
-            break;
+        else
+        {   
+            if ((u_int64_t)(SPU->cmds[SPU->ip]) & 010)
+            {
+                fprintf(stderr, "URA pop\n");
+                SPU->ip += 2;
+            }
+            else
+            {
+                fprintf(stderr, "vrode push\n");
+                fprintf(stderr, "huita!\n");
+                runCond = 1;
+            }
         }
     }
 }

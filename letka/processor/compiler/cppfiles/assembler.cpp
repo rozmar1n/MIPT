@@ -402,9 +402,9 @@ void BinWrite(double* cmd_array, const char* BinFileName, u_int32_t nCommands)
     fwrite(&ass_version, sizeof(int), 1, binFile);
     fwrite(&nCommands, sizeof(u_int32_t), 1, binFile);
 
-    ////
-    int temp = 0;
-    fwrite(&temp, sizeof(int), 1, binFile);
+    /////
+    //int temp = 0;
+    //fwrite(&temp, sizeof(int), 1, binFile);
     /////
     fwrite(cmd_array, sizeof(double), nCommands, binFile);//TODO: обработать 
     fclose(binFile);
