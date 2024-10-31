@@ -10,13 +10,17 @@
 
 const int nRegisters = 8;
 const int procVersion = 2;
+const int ram_volume = 2048;
 
 struct SPU_t
 {
-    double* cmds;
-    int     ip;
-    Stack_t stk;
+    double*    cmds;
+    int        ip;
+    Stack_t    stk;
+    Stack_t    proc_stk;
     double*    registers;
+    double*    ram;
+    FILE*      logfile;
 };
 
 void  MakeSPU    (const char *cmdFile, SPU_t *SPU);

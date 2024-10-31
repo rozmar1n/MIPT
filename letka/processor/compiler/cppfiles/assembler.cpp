@@ -336,11 +336,42 @@ fprintf(stderr, "before while\n");
                 nCommands += 2;
                 continue;
             }
+            if(strcmp(cmd, "call") == 0)
+            {
+                if(err) err = fprintf(machFile, "%d ", cmd_call);
+                long long temp_cmd = cmd_call;
+                memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(long long int));
+                cmd = cmds_indexes[asmIp++].string_start;
+
+                if (strchr(cmd, ':'))
+                {
+                    cmd_array[cmd_counter] = TakeLabel(labels, cmd);
+                    fprintf(machFile, "%lg ", cmd_array[cmd_counter]);
+                    cmd_counter++;
+                }
+                else
+                {
+                    cmd_array[cmd_counter] = atof(cmd);
+                    cmd_counter++;
+                    fprintf(machFile, "%s ", cmd);
+                }
+
+                nCommands += 2;
+                continue;
+            }
+            if(strcmp(cmd, "ret") == 0)
+            {
+                if(err) err = fprintf(machFile, "%d ", cmd_ret);
+                long long temp_cmd = cmd_ret;
+                memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(long long int));
+                nCommands++;
+                continue;
+            }
             if (strchr(cmd, ':'))
             {
                 if(!IsLabel(labels, cmd))
                 {
-                    MakeLabel(labels, cmd, nCommands++);
+                    MakeLabel(labels, cmd, nCommands);
                 }
                 continue;
             }
@@ -352,7 +383,7 @@ fprintf(stderr, "before while\n");
         // {
         //      fprintf(stderr, "%llu %lg\n", cmd_array[i], cmd_array[i]);
         // }
-        // ///////////////////////////////////
+        // ////////////////////////////////
 
         fseek(machFile, txt_sizeptr, SEEK_SET);
         fprintf(machFile, "%0*x\n", 8, nCommands);
@@ -466,7 +497,7 @@ double TakeLabel(labelArray_t* lblarr, char* labelName)
     {
         if (strcmp(labelName, lblarr->array[i].label_name) == 0)
         {
-            return lblarr->array[i].line_number;
+            return double(lblarr->array[i].line_number);
         }
     }
     return -1;
@@ -486,6 +517,8 @@ int    IsLabel (labelArray_t* lblarr, char* labelName)
 
 int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter, u_int32_t *nCommands)
 {
+    double    PushArg = 0;
+    u_int64_t PushCmd = 0;
     if (strchr(cmd, '['))
     {
         *(strchr(cmd, '[')) = '\0';
@@ -493,14 +526,16 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
         if(strchr(cmd, ']'))
         {
             *(strchr(cmd, ']')) = '\0';
+            PushCmd += 4;
             if (strchr(cmd, '+'))
             {
                 char* plus_ptr = strchr(cmd, '+');
                 *plus_ptr = '\0';
 
-                fprintf(machFile, "%d ", cmd_ram_push_pushr);
-                long long temp_cmd = cmd_ram_push_pushr;
-                memcpy(&(cmd_array[(*cmd_counter)++]), &temp_cmd, sizeof(long long int));
+                PushCmd += 3;
+
+                fprintf(machFile, "%lu ", PushCmd);
+                memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
 
                 *plus_ptr = '\0';
                 int reg = -1;
@@ -531,15 +566,17 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
             }
             else
             {
+                PushCmd += 1;
                 int reg = -1;
                 reg = FillReg(cmd);
                 if (reg != -1)
                 {
                     //fprintf(stderr, "not null register!!!\n");
                     //fprintf(stderr, "register: %d ", reg);
-                    fprintf(machFile, "%d ", cmd_ram_pushr);
-                    long long temp_cmd = cmd_ram_pushr;
-                    memcpy(&(cmd_array[(*cmd_counter)++]), &temp_cmd, sizeof(long long int));
+                    
+                    PushCmd += 1;
+                    fprintf(machFile, "%d ", PushCmd);
+                    memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
                     fprintf(machFile, "%d ", reg);
 
                     cmd_array[*cmd_counter] = (double)reg;
@@ -549,9 +586,8 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
                 }
                 else
                 {
-                    fprintf(machFile, "%d ", cmd_ram_push);
-                    long long temp_cmd = cmd_ram_push;
-                    memcpy(&(cmd_array[(*cmd_counter)++]), &temp_cmd, sizeof(long long int));
+                    fprintf(machFile, "%d ", PushCmd);
+                    memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
 
                     fprintf(machFile, "%s ", cmd);
                     cmd_array[*cmd_counter] = atof(cmd);
@@ -576,9 +612,10 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
             char* plus_ptr = strchr(cmd, '+');
             *plus_ptr = '\0';
             
+            PushCmd += 3;
+
             fprintf(machFile, "%d ", cmd_push_pushr);
-            long long temp_cmd = cmd_push_pushr;
-            memcpy(&(cmd_array[(*cmd_counter)++]), &temp_cmd, sizeof(long long int));
+            memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
             
             int reg = -1;
             reg = FillReg(cmd);
@@ -612,21 +649,20 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
             reg = FillReg(cmd);
             if (reg != -1)
             {
-                fprintf(machFile, "%d ", cmd_pushr);
-                long long temp_cmd = cmd_pushr;
-                memcpy(&(cmd_array[(*cmd_counter)++]), &temp_cmd, sizeof(long long int));
+                PushCmd += 2;
+                fprintf(machFile, "%d ", PushCmd);
+                memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
                 fprintf(machFile, "%d ", reg);
                 (u_int64_t)reg;
                 cmd_array[*cmd_counter] = reg;
                 (*cmd_counter)++;
-
                 (*nCommands) += 2;
             }
             else
             {
-                fprintf(machFile, "%d ", cmd_push);
-                long long temp_cmd = cmd_push;
-                memcpy(&(cmd_array[(*cmd_counter)++]), &temp_cmd, sizeof(long long int));
+                PushCmd += 1;
+                fprintf(machFile, "%d ", PushCmd);
+                memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
                 fprintf(machFile, "%s ", cmd);
                 cmd_array[*cmd_counter] = atof(cmd);
                 (*cmd_counter)++;
@@ -730,7 +766,7 @@ int    WritePopArgs (char* cmd, FILE* machFile, double* cmd_array, int* cmd_coun
         popArg = FillReg(cmd);
         if (popArg != -1)
         {
-            fprintf(machFile, "%lu %lg", popCmd, popArg);
+            fprintf(machFile, "%lu %lg ", popCmd, popArg);
             (*nCommands) += 2;
         }
         else

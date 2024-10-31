@@ -1,7 +1,23 @@
+push 100
+push 100
+push 100
+push 100
+push 100
+push 100
+push 100
+push 100
+push 100
+push 100
+push 100
+
 pop bx
-pop [100]
+pop [100+100]
 pop [cx]
+push ax
+push 190
+push [ax+100]  
+add
+sub
+div
+out
 hlt
-
-
-
