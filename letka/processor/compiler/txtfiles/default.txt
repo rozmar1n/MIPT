@@ -1,38 +1,4 @@
-in    
-pop ax
-in
-pop bx
-in
-pop cx
-push bx
-push bx
-mul
-push 4
-push ax
-mul
-push cx
-mul
-sub
-sqrt
-pop dx
-push -1
-push bx
-mul
-push dx
-add
-push 2
-push ax
-mul
-div
-out
-push dx
-push -1
-push bx
-mul
-add
-push 2
-push ax
-mul
-div
-out
-hlt  
+pop[ax] 
+pop[bx] 
+; hello world
+hlt

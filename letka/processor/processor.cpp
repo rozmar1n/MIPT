@@ -297,7 +297,17 @@ void out_f(SPU_t *SPU)
     StackPop(&(SPU->stk), &a);
     assert(a != NAN);
     fprintf(SPU->logfile, "\tOUT: %lg\n", a);
-    //fprintf(stderr      , "\tOUT: %lg\n", a);
+    fprintf(stderr      , "\tOUT: %lg\n", a);
+    SPU->ip += 1;
+}
+
+void print_f(SPU_t *SPU)
+{
+    double a = NAN;
+    StackPop(&(SPU->stk), &a);
+    assert(a != NAN);
+    fprintf(SPU->logfile, "\tOUT: %c\n", (char)(a));
+    fprintf(stderr      , "\tOUT: %c\n", (char)(a));
     SPU->ip += 1;
 }
 
@@ -497,6 +507,10 @@ void Run(SPU_t *SPU)
             }
             case cmd_ret: {
                 ret_f(SPU);
+                break;
+            }
+            case cmd_print: {
+                print_f(SPU);
                 break;
             }
             default: 

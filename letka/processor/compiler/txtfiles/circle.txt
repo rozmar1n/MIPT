@@ -1,0 +1,4 @@
+in 
+pop ax
+push ax
+push -1

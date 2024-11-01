@@ -375,6 +375,14 @@ fprintf(stderr, "before while\n");
                 }
                 continue;
             }
+            if (strcmp(cmd, "print") == 0)
+            {
+                if(err) err = fprintf(machFile, "%d ", cmd_print);
+                long long temp_cmd = cmd_print;
+                memcpy(&(cmd_array[cmd_counter++]), &temp_cmd, sizeof(long long int));
+                nCommands++;
+                continue;
+            }
             err = 0;
         }
 
@@ -575,7 +583,7 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
                     //fprintf(stderr, "register: %d ", reg);
                     
                     PushCmd += 1;
-                    fprintf(machFile, "%d ", PushCmd);
+                    fprintf(machFile, "%lu ", PushCmd);
                     memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
                     fprintf(machFile, "%d ", reg);
 
@@ -586,7 +594,7 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
                 }
                 else
                 {
-                    fprintf(machFile, "%d ", PushCmd);
+                    fprintf(machFile, "%lu ", PushCmd);
                     memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
 
                     fprintf(machFile, "%s ", cmd);
@@ -650,7 +658,7 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
             if (reg != -1)
             {
                 PushCmd += 2;
-                fprintf(machFile, "%d ", PushCmd);
+                fprintf(machFile, "%lu ", PushCmd);
                 memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
                 fprintf(machFile, "%d ", reg);
                 (u_int64_t)reg;
@@ -661,7 +669,7 @@ int WritePushArgs(char* cmd, FILE* machFile, double* cmd_array, int* cmd_counter
             else
             {
                 PushCmd += 1;
-                fprintf(machFile, "%d ", PushCmd);
+                fprintf(machFile, "%lu ", PushCmd);
                 memcpy(&(cmd_array[(*cmd_counter)++]), &PushCmd, sizeof(long long int));
                 fprintf(machFile, "%s ", cmd);
                 cmd_array[*cmd_counter] = atof(cmd);

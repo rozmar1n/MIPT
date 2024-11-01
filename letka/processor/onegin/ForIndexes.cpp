@@ -18,29 +18,40 @@ Strings* MakeIndex(char* textik, int* AmountOfLines, long TextSize)
 
     for (size_t i = 0; i < TextSize; i++)
     {
-        if (textik[i] == '\n' || textik[i] == '\r' || isspace(textik[i]) || textik[i] == '\0')
+        if (textik[i] == ';')
         {
-            textik[i] = '\0';
-            if (inCmd)
+            while(textik[i] != '\n')
             {
-                strings_in_func[nstrings].string_size = ThisStringLength;
-                ThisStringLength = 0;
-                nstrings++;
-                textik[i] = '\0';
+                i++;
             }
-            inCmd = 0;
+            i--;
         }
         else
         {
-            if (inCmd)
+            if (textik[i] == '\n' || textik[i] == '\r' || isspace(textik[i]) || textik[i] == '\0')
             {
-                ThisStringLength++;
+                textik[i] = '\0';
+                if (inCmd)
+                {
+                    strings_in_func[nstrings].string_size = ThisStringLength;
+                    ThisStringLength = 0;
+                    nstrings++;
+                    textik[i] = '\0';
+                }
+                inCmd = 0;
             }
             else
             {
-                strings_in_func[nstrings].string_start = &(textik[i]);
+                if(inCmd)
+                {
+                    ThisStringLength++;
+                }
+                else
+                {
+                    strings_in_func[nstrings].string_start = &(textik[i]);
+                }
+                inCmd = 1;
             }
-            inCmd = 1;
         }
     }
 

@@ -41,6 +41,7 @@ enum instruction_t
     cmd_jne            = 55,
     cmd_call           = 56,
     cmd_ret            = 57,
+    cmd_print          = 58,
     cmd_hlt            = -1
 };
 
