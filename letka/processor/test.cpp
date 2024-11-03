@@ -17,18 +17,26 @@ int main(void)
     }
     fclose(write_binfile);
 
-    FILE* read_binfile = fopen("test_binfile.bin", "rb");
-    double array[10];
-    char signat[5] = {'\0'};
-    fread(signat, sizeof(char), 4, read_binfile);
-    //fprintf(stderr,"%s\n", signat);
-    fread(array, sizeof(double), 10, read_binfile);
-    //for (int i = 0; i < 10; i++)
-    //{
-      //  fprintf(stderr, "%lg ", array[i]);
-    //}
-    long long int test_lli = 28; 
-    fprintf(stderr, "%llx", test_lli);
-  
-    
+    printf("%d", '\n');
+
+
+
+
+
+
+
+
+
+
+
+    // while(n >= -1 * R)
+    // {
+    //     array[(int)round(R - sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter)] = 1;
+    //     fprintf(logfile, "push 64 \npop[%d] \n", (int)round(R - sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter));
+    //     array[(int)round(R + sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter) + 1] = 1;
+    //     fprintf(logfile, "push 64 \npop[%d] \n", (int)round(R + sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter));
+    //     fprintf(logfile, "push 10 \npop[%d] \n", int(2*R*(counter+1)));
+    //     counter++;
+    //     n -= 1;
+    // }
 }

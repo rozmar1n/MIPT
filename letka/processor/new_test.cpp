@@ -3,20 +3,36 @@
 
 int main()
 {    
+    FILE* logfile = fopen("circle.txt", "w");
     double R = 0;
     printf("Enter R:\t");
     scanf("%lg", &R);
     double n = R;
-    double size = 4*(R * R);
-    int  array[(int)size] = {'\0'};
+    double size = 5*(R * R);
+    int  array[(int)size ] = {'\0'};
     int counter = 0;
+    int x_1 = 0, x_2 = 0;
     while(n >= -1 * R)
     {
-        array[(int)round(R - sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter)] = 1;
-        array[(int)round(R + sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter) + 1] = 1;
+        x_1 = (int)ceil(R - sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter) + 1;
+        array[x_1] = 1;
+        fprintf(logfile, "push 64 \npop [%d] \n", x_1); 
+        
+        x_2 =  (int)floor(R + sqrt(pow(R,2) - pow(n, 2))) + int(2*R*counter) - 1;
+        array[x_2] = 1;
+        fprintf(logfile, "push 64 \npop [%d] \n", x_2);
+
+        fprintf(logfile, "push 10 \npop [%d] \n", int(2*R*(counter+1)));
+
         counter++;
-        n -= 1;
+        n --;
     }
+
+    for (size_t i = 0; i < (size_t)pow(2*R +2, 2); i++)
+    {
+        fprintf(logfile, "push [%lu]\nprint\n", i);
+    }
+    fprintf(logfile, "hlt\n");
 
     for (int i = 0; i <= 4*R*R; i++)
     {

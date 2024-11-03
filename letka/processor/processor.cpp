@@ -2,62 +2,6 @@
 const int BufferSize = 25;
 const int InfoSize = 16;
 
-void MakeSPU(const char *cmdFile, SPU_t *SPU)
-{
-    
-    FILE* machCode = fopen(cmdFile, "r");
-    if (machCode == NULL)
-    {
-        fprintf(stderr, "We cannot open this file!\n");
-        fprintf(stderr, "fileptr: %p", machCode);
-        return;
-    }    
-    
-    char buffer[BufferSize];
-    double* algorithm = NULL;
-
-    char info[InfoSize] = {};
-    fscanf(machCode, "%s", info);
-    if (strcmp(info, "ROST"))
-    {
-        fprintf(stderr, "We cannot read this type of code!\n");
-        return;
-    }
-    else
-    {
-        fscanf(machCode, "%s", info);
-        if (strcmp(info, "1"))
-        {
-            fprintf(stderr, "Version of compiler and processor are not similar");
-            fprintf(stderr, "version: %s", info);
-            return;
-        }
-        else
-        {
-            fscanf(machCode, "%s", info);
-            char* temp = NULL;
-            u_int32_t ncmds = strtoul(info, &temp, 16);
-
-            //fprintf(stderr, "size: %d\n", ncmds);
-            SPU->cmds = (double*)calloc(ncmds, sizeof(double));
-            //fprintf(stderr, "SPU->cmds callocated correctly\n");
-
-            char string_elem[25] = {'\0'};
-            double elem = 0;
-            for (u_int32_t i = 0; i < ncmds; i++)
-            {
-                fscanf(machCode, "%s", string_elem);
-                //fprintf(stderr, "%s ", string_elem);
-                elem = strtod(string_elem, &temp);
-                *(SPU->cmds + i) = elem;
-                //fprintf(stderr, "%lg ", SPU->cmds[i]);
-            }
-            //fprintf(stderr, "\n");
-            return;
-        }
-    }
-}
-
 void  MakeBinSPU (const char *binFile, SPU_t *SPU)
 {
     FILE* machCode = fopen(binFile, "rb"); assert(machCode);
@@ -85,18 +29,10 @@ void  MakeBinSPU (const char *binFile, SPU_t *SPU)
     fread(&nComands, sizeof(u_int32_t), 1, machCode);
     //fprintf(stderr, "nCommands: %u\n", nComands);
 
-    SPU->cmds = (double*)calloc(nComands, sizeof(double));
+    SPU->cmds = (double*)calloc(nComands + 100, sizeof(double));
 
     fread(SPU->cmds, sizeof(double), nComands, machCode);
-    u_int64_t t_result = 6669;
     
-    for (size_t i = 0; i < nComands; i++)
-    {
-        
-        // fprintf(stderr, "%2lu. command:   %ld\n", i, (SPU->cmds[i]));
-        // memcpy(&t_result, &(SPU->cmds[i]), sizeof(u_int64_t));
-        // fprintf(stderr, "%2lu. command:   %lu\n", i, t_result);
-    }
     fclose(machCode);
 }
 
@@ -305,9 +241,17 @@ void print_f(SPU_t *SPU)
 {
     double a = NAN;
     StackPop(&(SPU->stk), &a);
-    assert(a != NAN);
-    fprintf(SPU->logfile, "\tOUT: %c\n", (char)(a));
-    fprintf(stderr      , "\tOUT: %c\n", (char)(a));
+    assert(a != NAN && a < 256);
+    if (a < 0.00001)
+    {
+        fprintf(SPU->logfile, "  ");
+        fprintf(stderr      , "  ");
+    }
+    else
+    {
+        fprintf(SPU->logfile, "%c ", (char)(a));
+        fprintf(stderr      , "%c ", (char)(a));
+    }
     SPU->ip += 1;
 }
 
@@ -334,7 +278,7 @@ void push_pushr_f(SPU_t * SPU)
 void ram_push_f(SPU_t *SPU)
 {
     int64_t ram_cell = -1;
-    memcpy(&ram_cell, &(SPU->cmds[SPU->ip + 1]), sizeof(int64_t));
+    ram_cell = SPU->cmds[SPU->ip + 1];
     StackPush(&SPU->stk, SPU->ram[ram_cell]);
     SPU->ip += 2;
 }

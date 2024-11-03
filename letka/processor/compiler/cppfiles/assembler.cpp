@@ -19,13 +19,12 @@ void MakeMachCode(const char* ProgramFile, const char* cmdFile, const char* logF
 //fprintf(stderr, "AmountOfComands: %d\n", amountOfCommands);
     int asmIp = 0;
 
-
     fprintf(machFile, "%s\n", "ROST");
     fprintf(machFile, "%d\n", ass_version);
 
     long int txt_sizeptr = ftell(machFile);
 
-        double* cmd_array = (double*)calloc(1024, sizeof(double));
+        double* cmd_array = (double*)calloc(100000, sizeof(double));
         int cmd_counter = 0;
 
     for (int i = 0; i < 2*sizeof(unsigned int); i++)

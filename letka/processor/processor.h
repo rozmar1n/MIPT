@@ -10,7 +10,7 @@
 
 const int nRegisters = 8;
 const int procVersion = 2;
-const int ram_volume = 2048;
+const int ram_volume = 10000;
 
 struct SPU_t
 {
@@ -23,7 +23,6 @@ struct SPU_t
     FILE*      logfile;
 };
 
-void  MakeSPU    (const char *cmdFile, SPU_t *SPU);
 void  MakeBinSPU (const char *binFile, SPU_t *SPU);
 void  Run        (SPU_t *SPU);
 SPU_t MakeNullSPU();
