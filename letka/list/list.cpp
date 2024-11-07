@@ -1,120 +1,291 @@
 #include "list.h"
+const int    poison   = 0xdeadbeef;
+const size_t fic_elem = 0;   
 
 int ListCtor(List_t *lst, size_t lstSize)
 {
-    lst->ar_data = NULL;
-    lst->ar_data = (int*)calloc(lstSize + 1, sizeof(ListElem_t));
-    if (lst->ar_data == NULL)
+    lst->data = NULL;
+    lst->data = (ListElem_t*)calloc(lstSize + 1, sizeof(ListElem_t));
+    if (lst->data == NULL)
     {
-        fprintf(stderr, "\n\t ar_data array allocation problem!!!\n");
+        fprintf(stderr, "\n\t data array allocation problem!!!\n");
         return 0;
     }
-    lst->ar_data[0] = poison; 
+    lst->data[0] = poison; 
 
-    lst->next.ar_next = NULL;
-    lst->next.ar_next = (int*)calloc(lstSize + 1, sizeof(ListElem_t));
-    if (lst->next.ar_next == NULL)
+    lst->next = NULL;
+    lst->next = (size_t*)calloc(lstSize + 1, sizeof(size_t));
+    if (lst->next == NULL)
     {
-        fprintf(stderr, "\n\t ar_next array allocation problem!!!\n");
+        fprintf(stderr, "\n\t next array allocation problem!!!\n");
         return 0;
     }
-    lst->next.firstFreeElem    = 1;
-    lst->next.ar_next[0]       = 0;
-    lst->next.ar_next[lstSize] = 0;
-    for (size_t i = 1; i < lstSize; i++)
+    lst->next[0]       = 0;
+    lst->next[lstSize] = 1;
+    for (size_t i = 1; i < lstSize - 1; i++)
     {
-        lst->next.ar_next[i] = -(i+1);
-        fprintf(stderr, "%lu: lst->next.ar_next[i] = %d\n", i, lst->next.ar_next[i]);
+        lst->next[i] = i+1;
+        //fprintf(stderr, "lst->next.ar_next[%lu] = %d\n", i, lst->next[i]);
     }
-    
-    lst->ar_prev = NULL;
-    lst->ar_prev = (int*)calloc(lstSize + 1, sizeof(ListElem_t));
-    if (lst->ar_prev == NULL)
+    lst->freeElem = lstSize;
+
+
+
+    lst->prev = NULL;
+    lst->prev = (size_t*)calloc(lstSize + 1, sizeof(size_t));
+    if (lst->prev == NULL)
     {
-        fprintf(stderr, "\n\t ar_prev array allocation problem!!!\n");
+        fprintf(stderr, "\n\t prev array allocation problem!!!\n");
         return 0;
     }
-    lst->ar_prev[0] = 0;
-    for (size_t i = 1; i < lstSize; i++)
+    lst->prev[0] = 0;
+
+    #ifdef debug_m
+    for (size_t i = 1; i <= lstSize; i++)
     {
-        lst->ar_prev[i] = -1;
+        lst->prev[i] = -0;
     }
-    for (size_t i = 0; i < lstSize; i++)
-    {
-        lst->ar_prev[i] = -1;
-    }
-    
-    
-    
-    lst->head = 0;
-    lst->tail = 0;
-    lst->listSize = lstSize;
+    #endif
+
+
+    lst->listSize = 0;
+    lst->listMaxSize = lstSize;
+//fprintf(stderr, "ListMaxSize = %lu\n", lst->listMaxSize);
+
+    lst->nPictures = 0;
     return 1;
 }
 
 void ListDtor(List_t *lst)
 {
-    free(lst->ar_data);
-    free(lst->next.ar_next);
-    free(lst->ar_prev);
+    lst->freeElem    = 0;
+    lst->listMaxSize = 0;
+    lst->listSize    = 0;
+    
+    free(lst->data);
+    free(lst->next);
+    free(lst->prev);
 }
 
-int ListInsertAfter(List_t *lst, size_t elemNumber, int elem)
+int ListInsert(List_t *lst, size_t elemNumber, ListElem_t elem)
 {
+    if (elemNumber == 0)
+    {
+        return 1;
+        //elemNumber = 1;
+    }
+    
+    
+    lst->listSize += 1;
     if (elemNumber > lst->listSize)
     {
-        fprintf(stderr, "The entered item number is greater"
-                        " than the specified list size!\n");
-            return 1;
+        return 1;
+        //elemNumber = lst->listSize;
     }
-    if ((elemNumber > lst->head))
-    {        
-        fprintf(stderr, "The list item before yours has "
-                        "not yet been entered.\n"
-                        "Do you want to insert the item "
-                        "at the end of the list? (y/n)\n");
-        
-        char answer = '\0';
-        scanf("%c", &answer);
-        answer = tolower(answer);
-        if (answer == 'y')
-        {
-            elemNumber = lst->head;
-        }
-        else
-        {
-            fprintf(stderr, "ok, it's yout choise\n");
-            return 1;
-        }
-    }
-    
-    if (lst->head == 0 && lst->tail == 0)
+
+
+    if (lst->next[lst->freeElem] == 0)
     {
-        lst->head                = 1;
-        lst->tail                = 0;
-        lst->ar_data[elemNumber] = elem; 
+        lst->listMaxSize *= 2;
+        lst->data = (ListElem_t*)realloc(lst->data, (lst->listMaxSize + 1)*sizeof(ListElem_t));
 
-        lst->ar_prev[1] = 0;
+        lst->next =     (size_t*)realloc(lst->next, (lst->listMaxSize + 1)*sizeof(size_t));
+        
+        for (size_t i = lst->listSize + 1; i < lst->listMaxSize - 1; i++)
+        {
+            lst->next[i] = i + 1;
+        }
+
+        lst->next[lst->listMaxSize] = lst->listSize + 1;
+        lst->next[lst->freeElem] = lst->listMaxSize;
+
+
+        lst->prev =     (size_t*)realloc(lst->prev, (lst->listMaxSize + 1)*sizeof(size_t));
+        
+        for (size_t i = lst->listSize + 1; i < lst->listMaxSize; i++)
+        {
+            lst->prev[i] = -0;
+        }
+
     }
-    if (elemNumber == lst->head)
+
+
+    size_t before = fic_elem;
+    for (size_t i = 1; i < elemNumber; i++)
     {
-        lst->ar_data[-1*(lst->next.firstFreeElem)] = elem; 
-        lst->next.firstFreeElem = lst->next.ar_next[-1*(lst->next.firstFreeElem)];
-        lst->next.ar_next[lst->head] *= -1;
-        lst->head = lst->next.ar_next[lst->head];
-        
-        //lst->next.ar_next[lst->head] = -1*(lst->next.firstFreeElem);
-        //lst->next.firstFreeElem = -1*( lst->next.ar_next[lst->next.firstFreeElem]);
-
-
-        
-        // lst->ar_data[lst->head] = elem;
-        
-        // lst->next.ar_next[lst->head] = lst->next.firstFreeElem;
-        // lst->head = lst->next.firstFreeElem;
-        // lst->next.firstFreeElem = -lst->next.ar_next[lst->next.firstFreeElem];
-
-        // lst->ar_prev[lst]
+        before = lst->next[before];
     }
-    
+    size_t after = lst->next[before];
+
+
+    lst->data[lst->next[lst->freeElem]] = elem;
+    elemNumber                          = lst->next[lst->freeElem];
+    lst->next[lst->freeElem]            = lst->next[elemNumber];
+    lst->next[before]                   = elemNumber;
+    lst->next[elemNumber]               = after;
+    lst->prev[after]                    = elemNumber;
+    lst->prev[elemNumber]               = before;   
+
+    return 0; 
 }
+
+int ListDeleteElem(List_t *lst, size_t elemNumber) // deleteElem || erase
+{
+    if (elemNumber > lst->listMaxSize)
+    {
+        return 1;
+    }
+
+    if (lst->listSize == 0)
+    {
+        //fprintf(stderr, "List is empty!!!\n");
+        return 1;
+    }
+    
+    if (elemNumber == 0)
+    {
+        return 1;
+    }
+    
+    if (elemNumber > lst->listSize)
+    {
+        return 1;
+        elemNumber = lst->listSize;
+    }
+
+    size_t before = fic_elem;
+    for (size_t i = 1; i < elemNumber; i++)
+    {
+        before = lst->next[before];
+    }
+
+    elemNumber = lst->next[before];
+    size_t after = lst->next[elemNumber];
+
+    lst->next[before]     = after;
+    lst->prev[after]      = before;
+    
+    lst->next[elemNumber] = lst->freeElem;
+    lst->freeElem         = elemNumber;
+
+    lst->listSize -= 1;
+
+
+    // if (lst->listMaxSize / lst->listSize >= 4)
+    // {
+    //     lst->listMaxSize = lst->listMaxSize/4 + 1;
+    //     lst->data = (ListElem_t*)realloc(lst->data, (lst->listMaxSize + 1)*sizeof(ListElem_t));
+
+    //     lst->next =     (size_t*)realloc(lst->next, (lst->listMaxSize + 1)*sizeof(size_t));
+        
+    //     for (size_t i = lst->listSize + 1; i < lst->listMaxSize - 1; i++)
+    //     {
+    //         lst->next[i] = i + 1;
+    //     }
+
+    //     lst->next[lst->listMaxSize] = lst->listSize + 1;
+    //     lst->next[lst->freeElem] = lst->listMaxSize;
+
+    //     lst->prev =     (size_t*)realloc(lst->prev, (lst->listMaxSize + 1)*sizeof(size_t));
+        
+    //     for (size_t i = lst->listSize + 1; i < lst->listMaxSize; i++)
+    //     {
+    //         lst->prev[i] = -1;
+    //     }
+    // }
+    
+    return 0;
+}
+
+int* ListTakeElemPtr(List_t *lst, size_t elemNumber)//ListTakeElemIndex; ListTakeNextElemIndex; ListTakeNextElem
+{
+    if (elemNumber > lst->listMaxSize)
+    {
+        return NULL;
+    }
+    
+    if (elemNumber == 0)
+    {
+        return NULL;
+    }
+    
+    if (elemNumber > lst->listSize)
+    {
+        return NULL;
+        //elemNumber = lst->listSize;
+    }
+    
+    size_t numberInList = fic_elem;
+    for (size_t i = 0; i < elemNumber; i++)
+    {
+        numberInList = lst->next[numberInList];
+    }
+    return &(lst->data[numberInList]);
+}
+
+void MakeListGraph(List_t *lst)
+{
+    lst->nPictures += 1;
+    
+    char* graphName = (char*)calloc(1024, sizeof(char));
+    sprintf(graphName, "dotfiles/%d.dot", lst->nPictures);
+
+    FILE* newGraph = fopen(graphName, "w");
+    fprintf(newGraph, "digraph G\n\t{\n\t");
+    fprintf(newGraph, "rankdir = LR\n\t");
+    int elem = 0;
+    for (size_t i = 0; i <= lst->listMaxSize; i++)
+    {
+        fprintf(newGraph, "node%0*lu [shape=Mrecord; label = \" {%0*lu} "
+                          "| {data = %d} | {next = %lu} |{ prev = %lu }\"];\n\t", 
+                           3, i, 3, i, lst->data[i], lst->next[i], lst->prev[i]);
+    }
+
+    elem = 0;
+    for (size_t i = 0; i <= lst->listMaxSize; i++)
+    {
+        fprintf(newGraph, "node%03lu -> node%03lu [weight = 1000; color = white; ];\n\t",
+                           lst->next[i], lst->next[lst->next[i]]);
+        elem = lst->next[elem];
+    }
+    elem = 0;
+    for (size_t i = 0; i <= lst->listSize; i++)
+    {
+        fprintf(newGraph, "node%03d -> node%03lu [color = blue;]\n\t",
+                           elem, lst->prev[elem]);
+        elem = lst->prev[elem];
+    }
+    elem = 0;
+    for (size_t i = 0; i <= lst->listSize; i++)
+    {
+        fprintf(newGraph, "node%03d ->node%03lu [weight = 100000; color = red;]\n\t",
+                           elem, lst->next[elem]);
+        elem = lst->next[elem];
+    }
+
+    fprintf(newGraph, "FREE -> node%03lu [color = green;]\n\t", 
+                       lst->freeElem);
+
+    fprintf(newGraph, "}");
+    char buffer[1024] = {'\0'};
+
+    char* pictureName = (char*)calloc(1024, sizeof(char));
+    sprintf(pictureName, "list_pictures/%d.png", lst->nPictures);
+
+    sprintf(buffer, "dot -Tpng %s -o %s\n", graphName, pictureName);
+    //printf("%s", buffer);
+    fclose(newGraph);
+    system(buffer);
+    
+    free(pictureName);
+    free(graphName);
+}
+
+void CleanCmdBuffer(void)
+{
+    while(getchar() != EOF)
+    {
+        true;
+    }
+}
+

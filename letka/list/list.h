@@ -6,34 +6,32 @@
 #include <string.h>
 #include <ctype.h>
 
-#define FirstElem lst->tail
-#define LastElem  lst->head
+#define debug_m //<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<->
+
 
 typedef int ListElem_t;
 
-const int poison = -911119;  
-
-struct nextArray_t
-{
-    ListElem_t* ar_next;
-    size_t      firstFreeElem;
-};
 
 struct List_t
 {
     size_t      listSize;
-    ListElem_t* ar_data;
-    size_t      head;
-    size_t      tail;
-
-    nextArray_t next;
+    size_t      listMaxSize;
+    size_t      freeElem;
+    ListElem_t* data;
+    size_t*     next; //elem_t -> size_t
+    size_t*     prev;
     
-    ListElem_t* ar_prev;
+    #ifdef debug_m
+    u_int8_t nPictures;
+    #endif
 };
 
 int  ListCtor(List_t *lst, size_t lstSize);
 void ListDtor(List_t *lst);
 
-int ListInsertAfter(List_t *lst, size_t elemNumber, int  elem);
-int ListDelete     (List_t *lst, size_t elemNumber, int *elem);
+int  ListInsert   (List_t *lst, size_t elemNumber, int  elem);
+int  ListDeleteElem   (List_t *lst, size_t elemNumber);
+int*  ListTakeElemPtr     (List_t *lst, size_t elemNumber);
+void MakeListGraph(List_t *lst);
+void CleanCmdBuffer(void);
 #endif //list_h

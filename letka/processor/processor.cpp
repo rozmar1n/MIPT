@@ -242,6 +242,8 @@ void print_f(SPU_t *SPU)
     double a = NAN;
     StackPop(&(SPU->stk), &a);
     assert(a != NAN && a < 256);
+    
+
     if (a < 0.00001)
     {
         fprintf(SPU->logfile, "  ");
