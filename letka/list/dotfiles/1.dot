@@ -1,0 +1,17 @@
+digraph G
+	{
+	rankdir = LR
+	node000 [shape=Mrecord; label = " {000} | {data = -559038737} | {next = 1} |{ prev = 1 }"];
+	node001 [shape=Mrecord; label = " {001} | {data = 10} | {next = 0} |{ prev = 0 }"];
+	node002 [shape=Mrecord; label = " {002} | {data = 0} | {next = 0} |{ prev = 0 }"];
+	node003 [shape=Mrecord; label = " {003} | {data = 0} | {next = 2} |{ prev = 0 }"];
+	node001 -> node000 [weight = 1000; color = white; ];
+	node000 -> node001 [weight = 1000; color = white; ];
+	node000 -> node001 [weight = 1000; color = white; ];
+	node002 -> node000 [weight = 1000; color = white; ];
+	node000 -> node001 [color = blue;]
+	node001 -> node000 [color = blue;]
+	node000 ->node001 [weight = 100000; color = red;]
+	node001 ->node000 [weight = 100000; color = red;]
+	FREE -> node003 [color = green;]
+	}
