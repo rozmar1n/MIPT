@@ -129,7 +129,7 @@ int ListInsert(List_t *lst, size_t elemNumber, ListElem_t elem)
     return 0; 
 }
 
-int ListDeleteElem(List_t *lst, size_t elemNumber) // deleteElem || erase
+int ListDeleteElem(List_t *lst, size_t elemNumber)
 {
     if (elemNumber > lst->listMaxSize)
     {
@@ -197,7 +197,7 @@ int ListDeleteElem(List_t *lst, size_t elemNumber) // deleteElem || erase
     return 0;
 }
 
-int* ListTakeElemPtr(List_t *lst, size_t elemNumber)//ListTakeElemIndex; ListTakeNextElemIndex; ListTakeNextElem
+int* ListTakeElemPtr(List_t *lst, size_t elemNumber)
 {
     if (elemNumber > lst->listMaxSize)
     {
@@ -287,5 +287,14 @@ void CleanCmdBuffer(void)
     {
         true;
     }
+}
+
+int* ListTakeFirstElemPtr (List_t *lst)
+{
+    return &(lst->data[lst->next[fic_elem]]);
+}
+int* ListTakeLastElemPtr  (List_t *lst)
+{
+    return &(lst->data[lst->prev[fic_elem]]);
 }
 
