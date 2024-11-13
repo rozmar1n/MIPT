@@ -31,9 +31,15 @@ void ListDtor(List_t *lst);
 
 int  ListInsert           (List_t *lst, size_t elemNumber, int  elem);
 int  ListDeleteElem       (List_t *lst, size_t elemNumber);
-int* ListTakeElemPtr      (List_t *lst, size_t elemNumber);
-int* ListTakeFirstElemPtr (List_t *lst);
-int* ListTakeLastElemPtr  (List_t *lst);
+
+int*   ListTakeElemPtr       (List_t *lst, size_t elemNumber);
+int*   ListTakeFirstElemPtr  (List_t *lst);
+int*   ListTakeLastElemPtr   (List_t *lst);
+size_t ListTakeFirstElemIndex(List_t *lst);
+size_t ListTakeLastElemIndex (List_t *lst);
+size_t ListTakeNextElemIndex (List_t *lst, size_t index);
+int*   ListTakeElemByIndex   (List_t *lst, size_t index);
+
 void MakeListGraph        (List_t *lst);
 void CleanCmdBuffer       (void);
 #endif //list_h

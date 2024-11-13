@@ -87,9 +87,9 @@ int ListInsert(List_t *lst, size_t elemNumber, ListElem_t elem)
     if (lst->next[lst->freeElem] == 0)
     {
         lst->listMaxSize *= 2;
-        lst->data = (ListElem_t*)realloc(lst->data, (lst->listMaxSize + 1)*sizeof(ListElem_t));
+        lst->data = (ListElem_t*)realloc(lst->data, (lst->listMaxSize + 2)*sizeof(ListElem_t));
 
-        lst->next =     (size_t*)realloc(lst->next, (lst->listMaxSize + 1)*sizeof(size_t));
+        lst->next =     (size_t*)realloc(lst->next, (lst->listMaxSize + 2)*sizeof(size_t));
         
         for (size_t i = lst->listSize + 1; i < lst->listMaxSize - 1; i++)
         {
@@ -100,7 +100,7 @@ int ListInsert(List_t *lst, size_t elemNumber, ListElem_t elem)
         lst->next[lst->freeElem] = lst->listMaxSize;
 
 
-        lst->prev =     (size_t*)realloc(lst->prev, (lst->listMaxSize + 1)*sizeof(size_t));
+        lst->prev =     (size_t*)realloc(lst->prev, (lst->listMaxSize + 2)*sizeof(size_t));
         
         for (size_t i = lst->listSize + 1; i < lst->listMaxSize; i++)
         {
@@ -169,35 +169,11 @@ int ListDeleteElem(List_t *lst, size_t elemNumber)
     lst->freeElem         = elemNumber;
 
     lst->listSize -= 1;
-
-
-    // if (lst->listMaxSize / lst->listSize >= 4)
-    // {
-    //     lst->listMaxSize = lst->listMaxSize/4 + 1;
-    //     lst->data = (ListElem_t*)realloc(lst->data, (lst->listMaxSize + 1)*sizeof(ListElem_t));
-
-    //     lst->next =     (size_t*)realloc(lst->next, (lst->listMaxSize + 1)*sizeof(size_t));
-        
-    //     for (size_t i = lst->listSize + 1; i < lst->listMaxSize - 1; i++)
-    //     {
-    //         lst->next[i] = i + 1;
-    //     }
-
-    //     lst->next[lst->listMaxSize] = lst->listSize + 1;
-    //     lst->next[lst->freeElem] = lst->listMaxSize;
-
-    //     lst->prev =     (size_t*)realloc(lst->prev, (lst->listMaxSize + 1)*sizeof(size_t));
-        
-    //     for (size_t i = lst->listSize + 1; i < lst->listMaxSize; i++)
-    //     {
-    //         lst->prev[i] = -1;
-    //     }
-    // }
     
     return 0;
 }
 
-int* ListTakeElemPtr(List_t *lst, size_t elemNumber)
+int* ListTakeElemPtr(List_t *lst, size_t elemNumber) 
 {
     if (elemNumber > lst->listMaxSize)
     {
@@ -212,7 +188,6 @@ int* ListTakeElemPtr(List_t *lst, size_t elemNumber)
     if (elemNumber > lst->listSize)
     {
         return NULL;
-        //elemNumber = lst->listSize;
     }
     
     size_t numberInList = fic_elem;
@@ -227,7 +202,7 @@ void MakeListGraph(List_t *lst)
 {
     lst->nPictures += 1;
     
-    char* graphName = (char*)calloc(1024, sizeof(char));
+    char graphName[128];
     sprintf(graphName, "dotfiles/%d.dot", lst->nPictures);
 
     FILE* newGraph = fopen(graphName, "w");
@@ -236,7 +211,7 @@ void MakeListGraph(List_t *lst)
     int elem = 0;
     for (size_t i = 0; i <= lst->listMaxSize; i++)
     {
-        fprintf(newGraph, "node%0*lu [shape=Mrecord; label = \" {%0*lu} "
+        fprintf(newGraph, "node%0*lu [shape=Mrecord; label = \" {%0*lu}"
                           "| {data = %d} | {next = %lu} |{ prev = %lu }\"];\n\t", 
                            3, i, 3, i, lst->data[i], lst->next[i], lst->prev[i]);
     }
@@ -267,18 +242,15 @@ void MakeListGraph(List_t *lst)
                        lst->freeElem);
 
     fprintf(newGraph, "}");
-    char buffer[1024] = {'\0'};
+    char buffer[512] = {'\0'};
 
-    char* pictureName = (char*)calloc(1024, sizeof(char));
+    char pictureName[128];
     sprintf(pictureName, "list_pictures/%d.png", lst->nPictures);
 
     sprintf(buffer, "dot -Tpng %s -o %s\n", graphName, pictureName);
-    //printf("%s", buffer);
+    fprintf(stderr, "%s", buffer);
     fclose(newGraph);
     system(buffer);
-    
-    free(pictureName);
-    free(graphName);
 }
 
 void CleanCmdBuffer(void)
@@ -293,8 +265,30 @@ int* ListTakeFirstElemPtr (List_t *lst)
 {
     return &(lst->data[lst->next[fic_elem]]);
 }
+
 int* ListTakeLastElemPtr  (List_t *lst)
 {
     return &(lst->data[lst->prev[fic_elem]]);
 }
 
+size_t ListTakeFirstElemIndex(List_t *lst)
+{
+    return lst->next[0];
+}
+
+size_t ListTakeLastElemIndex (List_t *lst)
+{
+    return lst->prev[0];
+}
+
+size_t ListTakeNextElemIndex (List_t *lst, size_t index)
+{
+    return lst->next[index];
+}
+
+int*   ListTakeElemByIndex   (List_t *lst, size_t index)
+{
+    return &(lst->data[index]);
+}
+
+//TODO: get next by index 
