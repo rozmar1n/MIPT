@@ -1447,3 +1447,7 @@ letka/list/list.o
 letka/akinator/bin_tree/main.o
 letka/akinator/bin_tree/Tree
 letka/akinator/bin_tree/bin_tree.o
+letka/akinator/akinator.o
+letka/akinator/akinator
+letka/akinator/dump/dotfiles/
+letka/akinator/dump/tree_pictures/

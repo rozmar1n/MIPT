@@ -38,7 +38,6 @@ void  TreeDumpFromStringNode(node* root, size_t* nPic)
 
     char graphName[128];
     sprintf(graphName, "dump/dotfiles/%lu.dot", *nPic);
-
     FILE* newGraph = fopen(graphName, "w");
     fprintf(newGraph, "digraph G\n\t" "{\n\t");
 
@@ -50,10 +49,9 @@ void  TreeDumpFromStringNode(node* root, size_t* nPic)
     char buffer[512] = {'\0'};
 
     char pictureName[128];
-    sprintf(pictureName, "dump/tree_pictures/%lu.png", *nPic);
-
+    sprintf(pictureName, "dump/tree_pictures/%lu.png\n", *nPic);
     sprintf(buffer, "dot -Tpng %s -o %s\n", graphName, pictureName);
-    fprintf(stderr, "%s", buffer);
+    //fprintf(stderr, "%s", buffer);
     fclose(newGraph);
     system(buffer);
 }
@@ -71,7 +69,7 @@ void GuessTheWord(node* root, node* parent)
         }
         else    
         {
-            printf("I am vert smart\n");
+            printf("I am very smart\n");
             return;
         }
     }
@@ -93,9 +91,11 @@ void AddQuestion(node* root, node* left_answer)
     printf("Enter the question: ");
     char* question = (char*)calloc(256, sizeof(char));
     scanf("%s", question);
+
     printf("Enter the answer: ");
     char* answer = (char*)calloc(256, sizeof(char));
     scanf("%s", answer);
+
     node* right_answer = MakeStringNode(answer, NULL, NULL);
 
     if (WhichChild(root, left_answer) == -1)
@@ -105,7 +105,7 @@ void AddQuestion(node* root, node* left_answer)
     }
     if (WhichChild(root, left_answer) == 1)
     {
-        root->child_left = MakeStringNode(question, left_answer, right_answer); 
+        root->child_right = MakeStringNode(question, left_answer, right_answer); 
         return;
     }
     fprintf(stderr, "Something is getting wrong. We don't know what it is\n");
