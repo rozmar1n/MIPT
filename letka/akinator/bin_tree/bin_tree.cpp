@@ -11,7 +11,7 @@ node* MakeLongIntNode    (lli data, node* child_left, node* child_right)
     return node_ptr;
 }
 
-void MakeGraphNode(node* node, FILE* newGraph)
+void MakeGraphLongIntNode(node* node, FILE* newGraph)
 {
     if (node == NULL)
     {
@@ -24,11 +24,11 @@ void MakeGraphNode(node* node, FILE* newGraph)
 
     if (node->child_left)
     {
-        MakeGraphNode(node->child_left, newGraph);
+        MakeGraphLongIntNode(node->child_left, newGraph);
     }
     if (node->child_right)
     {
-        MakeGraphNode(node->child_right, newGraph);
+        MakeGraphLongIntNode(node->child_right, newGraph);
     }
 }
 void MakeEdgeToChildren(node* node, FILE* newGraph)
@@ -52,17 +52,17 @@ void MakeEdgeToChildren(node* node, FILE* newGraph)
     }
 }
 
-void  TreeDumpFromNode   (node* root, size_t* nPic)
+void  TreeDumpFromLongIntNode   (node* root, size_t* nPic)
 {
     *(nPic) +=1;
 
     char graphName[128];
-    sprintf(graphName, "dotfiles/%llu.dot", *nPic);
+    sprintf(graphName, "dotfiles/%lu.dot", *nPic);
 
     FILE* newGraph = fopen(graphName, "w");
     fprintf(newGraph, "digraph G\n\t{\n\t");
 
-    MakeGraphNode(root, newGraph);
+    MakeGraphLongIntNode(root, newGraph);
     fprintf(newGraph, "\n\t");
     MakeEdgeToChildren(root, newGraph);
 
@@ -70,14 +70,14 @@ void  TreeDumpFromNode   (node* root, size_t* nPic)
     char buffer[512] = {'\0'};
 
     char pictureName[128];
-    sprintf(pictureName, "tree_pictures/%llu.png", *nPic);
+    sprintf(pictureName, "tree_pictures/%lu.png", *nPic);
 
     sprintf(buffer, "dot -Tpng %s -o %s\n", graphName, pictureName);
     fprintf(stderr, "%s", buffer);
     fclose(newGraph);
     system(buffer);
 }
-void  InsertLongIntNode  (node* leaf, node* root)
+void  InsertLongIntNode(node* leaf, node* root)
 {
     if (root == NULL)
     {

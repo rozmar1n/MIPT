@@ -15,9 +15,11 @@ struct node
     node* child_right;
 };
 
-node* MakeLongIntNode    (lli data, node* child_left, node* child_right);
-void  TreeDumpFromNode   (node* root, size_t* nPic);
-void  InsertLongIntNode  (node* leaf, node* root);
+node* MakeLongIntNode        (lli data, node* child_left, node* child_right);
+void  InsertLongIntNode      (node* leaf, node* root);
+void  MakeEdgeToChildren     (node* node, FILE* newGraph);
+void  MakeGraphLongIntNode   (node* node, FILE* newGraph);
+void  TreeDumpFromLongIntNode(node* root, size_t* nPic);
 
 void FreeTree(node* root);
 
