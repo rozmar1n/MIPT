@@ -120,17 +120,3 @@ char WhichChild(node* root, node* child)
         return 1;
     return 0;
 }
-
-void FreeStringTree(node* Tree_Root)
-{
-    if (Tree_Root->child_right)
-    {
-        FreeStringTree(Tree_Root->child_right);
-    }
-    if (Tree_Root->child_left)
-    {
-        FreeStringTree(Tree_Root->child_left);
-    }
-    free(Tree_Root->data);
-    free(Tree_Root);
-}

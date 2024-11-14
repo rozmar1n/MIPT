@@ -3,7 +3,8 @@
 node* MakeLongIntNode    (lli data, node* child_left, node* child_right)
 {
     node* node_ptr = (node*)calloc(1, sizeof(node));
-    memcpy(&(node_ptr->data), &data, sizeof(lli));  
+    node_ptr->data = calloc(1, sizeof(long long int));
+    *((lli*)node_ptr->data) = data;
 
     node_ptr->child_left = child_left;
     node_ptr->child_right = child_right;
@@ -20,7 +21,7 @@ void MakeGraphLongIntNode(node* node, FILE* newGraph)
     }    
     fprintf(newGraph, "node%p [shape=Mrecord; label = \" {%p"
                       "| data = %lld | left = %p | right = %p }\"];\n\t", 
-                       node, node, (lli)(node->data), node->child_left, node->child_right);
+                       node, node, *((lli*)(node->data)), node->child_left, node->child_right);
 
     if (node->child_left)
     {
@@ -85,7 +86,7 @@ void  InsertLongIntNode(node* leaf, node* root)
         return;
     }
 
-    if ((lli)(leaf->data) > (lli)(root->data))
+    if (*((lli*)(leaf->data)) > *((lli*)(root->data)))
     {
         if (root->child_right)
         {
@@ -123,5 +124,6 @@ void FreeTree(node* root)
     {
         FreeTree(root->child_right);
     }
+    free(root->data);
     free(root);
 }

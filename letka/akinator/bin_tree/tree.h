@@ -1,5 +1,5 @@
-#ifndef  bin_tree
-#define  bin_tree
+#ifndef  BIN_TREE_H
+#define  BIN_TREE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,4 +23,4 @@ void  TreeDumpFromLongIntNode(node* root, size_t* nPic);
 
 void FreeTree(node* root);
 
-#endif //bin_tree
+#endif //BIN_TREE_H

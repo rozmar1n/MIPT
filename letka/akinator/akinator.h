@@ -1,5 +1,5 @@
-#ifndef akinator_h
-#define akinator_h
+#ifndef AKINATOR_H
+#define AKINATOR_H
 
 #include "bin_tree/tree.h"
 
@@ -10,7 +10,6 @@ void MakeGraphStringNode   (node* node, FILE* newGraph);
 void TreeDumpFromStringNode(node* root, size_t* nPic);
 void AddQuestion           (node* root, node* answer);
 char WhichChild(node* root, node* child);
-void FreeStringTree(node* Tree_Root);
 
 
-#endif
+#endif //AKINATOR_H

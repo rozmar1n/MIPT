@@ -2,8 +2,8 @@
 
 int main()
 {
-    system("cd dotfiles/\nrm *\n");
-    system("cd tree_pictures/\nrm *\n");
+    system("cd dotfiles/\nrm * \n");
+    system("cd tree_pictures/\nrm * \n");
     //system("rm -i *\n");
     //system("cd ../\n");
     size_t nPic = 0;
