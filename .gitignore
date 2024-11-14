@@ -1437,11 +1437,14 @@ letka/akinator/bin_tree.o
 letka/akinator/main.o
 letka/akinator/testdisk.log
 letka/akinator/Tree
-letka/akinator/dotfiles/
-letka/akinator/tree_pictures/
+letka/akinator/bin_tree/dotfiles/
+letka/akinator/bin_tree/tree_pictures/
 letka/list/dotfiles/
 letka/list/list_pictures/
 letka/list/List
 letka/list/main.o
 letka/list/list.o
 letka/list/List
+letka/akinator/bin_tree/bin_tree.o
+letka/akinator/bin_tree/main.o
+letka/akinator/bin_tree/Tree
