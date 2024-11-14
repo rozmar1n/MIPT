@@ -32,12 +32,12 @@ void MakeGraphStringNode(node* node, FILE* newGraph)
     }
 }
 
-void  TreeDumpFromStringNode   (node* root, size_t* nPic)
+void  TreeDumpFromStringNode(node* root, size_t* nPic)
 {
     *(nPic) +=1;
 
     char graphName[128];
-    sprintf(graphName, "dotfiles/%llu.dot", *nPic);
+    sprintf(graphName, "dump/dotfiles/%lu.dot", *nPic);
 
     FILE* newGraph = fopen(graphName, "w");
     fprintf(newGraph, "digraph G\n\t" "{\n\t");
@@ -50,7 +50,7 @@ void  TreeDumpFromStringNode   (node* root, size_t* nPic)
     char buffer[512] = {'\0'};
 
     char pictureName[128];
-    sprintf(pictureName, "tree_pictures/%llu.png", *nPic);
+    sprintf(pictureName, "dump/tree_pictures/%lu.png", *nPic);
 
     sprintf(buffer, "dot -Tpng %s -o %s\n", graphName, pictureName);
     fprintf(stderr, "%s", buffer);
@@ -83,15 +83,54 @@ void GuessTheWord(node* root, node* parent)
         }
         else    
         {
-            AddQuestion(root, root->child_left);
+            AddQuestion(parent, root);
         }
     }
 }
 
-void AddQuestion(node* root, node* answer)
+void AddQuestion(node* root, node* left_answer)
 {
     printf("Enter the question: ");
     char* question = (char*)calloc(256, sizeof(char));
     scanf("%s", question);
+    printf("Enter the answer: ");
+    char* answer = (char*)calloc(256, sizeof(char));
+    scanf("%s", answer);
+    node* right_answer = MakeStringNode(answer, NULL, NULL);
+
+    if (WhichChild(root, left_answer) == -1)
+    {
+        root->child_left = MakeStringNode(question, left_answer, right_answer);
+        return; 
+    }
+    if (WhichChild(root, left_answer) == 1)
+    {
+        root->child_left = MakeStringNode(question, left_answer, right_answer); 
+        return;
+    }
+    fprintf(stderr, "Something is getting wrong. We don't know what it is\n");
     
+}
+
+char WhichChild(node* root, node* child)
+{
+    if (child == root->child_left)
+        return -1;
+    if  (child == root->child_right)
+        return 1;
+    return 0;
+}
+
+void FreeStringTree(node* Tree_Root)
+{
+    if (Tree_Root->child_right)
+    {
+        FreeStringTree(Tree_Root->child_right);
+    }
+    if (Tree_Root->child_left)
+    {
+        FreeStringTree(Tree_Root->child_left);
+    }
+    free(Tree_Root->data);
+    free(Tree_Root);
 }

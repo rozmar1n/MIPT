@@ -9,6 +9,8 @@ void GuessTheWord          (node* root, node* parent);
 void MakeGraphStringNode   (node* node, FILE* newGraph);
 void TreeDumpFromStringNode(node* root, size_t* nPic);
 void AddQuestion           (node* root, node* answer);
+char WhichChild(node* root, node* child);
+void FreeStringTree(node* Tree_Root);
 
 
 #endif

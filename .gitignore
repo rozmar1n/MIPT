@@ -1444,7 +1444,6 @@ letka/list/list_pictures/
 letka/list/List
 letka/list/main.o
 letka/list/list.o
-letka/list/List
-letka/akinator/bin_tree/bin_tree.o
 letka/akinator/bin_tree/main.o
 letka/akinator/bin_tree/Tree
+letka/akinator/bin_tree/bin_tree.o

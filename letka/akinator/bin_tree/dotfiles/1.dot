@@ -1,7 +1,0 @@
-digraph G
-	{
-	node0x5e17abd052a0 [shape=Mrecord; label = " {0x5e17abd052a0| data = 666999 | left = (nil) | right = 0x5e17abd052c0 }"];
-	node0x5e17abd052c0 [shape=Mrecord; label = " {0x5e17abd052c0| data = 667000 | left = (nil) | right = (nil) }"];
-	
-	node0x5e17abd052a0 -> node0x5e17abd052c0 [color = red;]
-	}
