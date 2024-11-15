@@ -2,32 +2,39 @@
 
 int main(void)
 {
-    system("cd dump/dotfiles/ \nrm -i *\n");
-    system("cd dump/tree_pictures/ \nrm -i *\n");
+    system("cd dump/dotfiles/ \nrm * \n");
+    system("cd dump/tree_pictures/ \nrm * \n");
     size_t nPic = 0;
-    char* first_question = (char*)calloc(64, sizeof(char));
-    strcpy(first_question, "Is_it_Phystech");
-    node* Tree_Root = MakeStringNode(first_question, NULL, NULL);
+    // char* first_question = (char*)calloc(64, sizeof(char));
+    // strcpy(first_question, "Рома");
+    // node* Tree_Root = MakeStringNode(first_question, NULL, NULL);
 //fprintf(stderr, "first question: %s\n", (char*)(Tree_Root->data));
-    TreeDumpFromStringNode(Tree_Root, &nPic);
+    // TreeDumpFromStringNode(Tree_Root, &nPic);
 
-    char* first_left_answer = (char*)calloc(64, sizeof(char));
-    strcpy(first_left_answer, "It's_Danila");
-    Tree_Root->child_left = MakeStringNode(first_left_answer, NULL, NULL);
+    // FILE* first_tree = fopen("tree_1.txt", "w");
+    // WriteTreeTxt(Tree_Root, first_tree);
+    // fclose(first_tree);
 
-    char* first_right_answer = (char*)calloc(64, sizeof(char));
-    strcpy(first_right_answer, "It's_me");
-    Tree_Root->child_right = MakeStringNode(first_right_answer, NULL, NULL);
 
-    TreeDumpFromStringNode(Tree_Root, &nPic);
+    // TreeDumpFromStringNode(Tree_Root, &nPic);
     
-    GuessTheWord(Tree_Root, NULL);
-    TreeDumpFromStringNode(Tree_Root, &nPic);
+    // GuessTheWord(Tree_Root, NULL);
+    // TreeDumpFromStringNode(Tree_Root, &nPic);
 
-    GuessTheWord(Tree_Root, NULL);
-    TreeDumpFromStringNode(Tree_Root, &nPic);
+    // FILE* second_tree = fopen("tree_2.txt", "w");
+    // WriteTreeTxt(Tree_Root, second_tree);
+    // fclose(second_tree);
 
+    long text_size = 0;
+    char* text = PutText("tree_3.txt", &text_size);
+    fprintf(stderr, "tree: %s\n", text);
+    node *Tree_Root = TakeTreeFromTxt(&text);
     GuessTheWord(Tree_Root, NULL);
+    
+    FILE* second_tree = fopen("tree_3.txt", "w");
+    WriteTreeTxt(Tree_Root, second_tree);
+    fclose(second_tree);
+
     TreeDumpFromStringNode(Tree_Root, &nPic);
 
     FreeTree(Tree_Root);

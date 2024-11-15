@@ -1,4 +1,0 @@
-pop[ax] 
-pop[bx] 
-; hello world
-hlt

@@ -1,9 +1,9 @@
 #ifndef  BIN_TREE_H
 #define  BIN_TREE_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 typedef int(*compar_func_t)(void* elem_1, void* elem_2, int MaxLine);
 typedef long long int lli; 
