@@ -26,12 +26,12 @@ int main(void)
     // fclose(second_tree);
 
     long text_size = 0;
-    char* text = PutText("tree_3.txt", &text_size);
+    char* text = PutText("tree.txt", &text_size);
     fprintf(stderr, "tree: %s\n", text);
     node *Tree_Root = TakeTreeFromTxt(&text);
     GuessTheWord(Tree_Root, NULL);
     
-    FILE* second_tree = fopen("tree_3.txt", "w");
+    FILE* second_tree = fopen("tree.txt", "w");
     WriteTreeTxt(Tree_Root, second_tree);
     fclose(second_tree);
 

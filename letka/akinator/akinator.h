@@ -16,6 +16,7 @@ void TreeDumpFromStringNode(node* root, size_t* nPic);
 void AddQuestion           (node* root, node* answer);
 char WhichChild            (node* root, node* child);
 
+
 void  WriteTreeTxt   (node* root, FILE* tree_file);
 node* TakeTreeFromTxt(char** filename);
 
