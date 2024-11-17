@@ -9,5 +9,6 @@
 #include"SumTests.h"
 #include"MultTest.h"
 
+#endif // scnd_h
 
-#endif //scnd_h
+void NewFunction();

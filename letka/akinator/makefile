@@ -4,8 +4,8 @@ CC = g++
 
 all: hello
 
-hello: main.o bin_tree/bin_tree.o akinator.o
-	$(CC) main.o bin_tree/bin_tree.o akinator.o -o akinator
+hello: main.o bin_tree/bin_tree.o Stack/Stack.o akinator.o
+	$(CC) main.o bin_tree/bin_tree.o akinator.o Stack/Stack.o -o akinator
 
 %.o: %.cpp
 	$(CC) -c $(CFLAFS) $< 

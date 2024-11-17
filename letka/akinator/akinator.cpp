@@ -87,7 +87,7 @@ void GuessTheWord(node* root, node* parent)
     printf("%s?\n", (char*)(root->data));
     char answer[32] = {'\0'};//make const
     scanf("%s", answer);
-    if (CheckTheAnswer(answer) == 1)
+    if (CheckTheAnswer(answer) == right_way)
     {
         if(root->child_right) 
         {
@@ -99,7 +99,7 @@ void GuessTheWord(node* root, node* parent)
             return;
         }
     }
-    if (CheckTheAnswer(answer) == -1)
+    if (CheckTheAnswer(answer) == left_way)
     {
         if(root->child_left) 
         {
@@ -143,12 +143,12 @@ void AddQuestion(node* root, node* left_answer)
     }
     else
     {
-        if (WhichChild(root, left_answer) == -1)
+        if (WhichChild(root, left_answer) == left_way)
         {
             root->child_left = MakeStringNode(question, left_answer, right_answer);
             return; 
         }
-        if (WhichChild(root, left_answer) == 1)
+        if (WhichChild(root, left_answer) == right_way)
         {
             root->child_right = MakeStringNode(question, left_answer, right_answer); 
             return;
@@ -161,9 +161,9 @@ void AddQuestion(node* root, node* left_answer)
 char WhichChild(node* root, node* child)
 {
     if (child == root->child_left)
-        return -1;
+        return left_way;
     if  (child == root->child_right)
-        return 1;
+        return right_way;
     return 0;
 }
 
@@ -216,7 +216,7 @@ node* TakeTreeFromTxt(char** tree_file_buffer)
 
         if((*tree_file_buffer)[0] == '{')
         {
-fprintf(stderr,"recurs started\n");
+//fprintf(stderr,"recurs started\n");
             (*tree_file_buffer) += 1;
             char* node_data = (char*)calloc(Max_String_For_Node, sizeof(char));
             int read_symbols = sscanf(*tree_file_buffer, "%[^{}]", node_data);
@@ -225,22 +225,22 @@ fprintf(stderr,"recurs started\n");
                 fprintf(stderr, "it is a very bad thing");
                 return NULL;
             }
-fprintf(stderr, "%s\n", node_data);
+//fprintf(stderr, "%s\n", node_data);
             
             while ((*tree_file_buffer)[0] !='{' && (*tree_file_buffer)[0] !='\0')
             {
-fprintf(stderr, "skipped symbol: %c\n", (**tree_file_buffer));
+//fprintf(stderr, "skipped symbol: %c\n", (**tree_file_buffer));
                 (*tree_file_buffer) += 1;
             }
             if ((*tree_file_buffer)[0] == '}')
             {
                 (*tree_file_buffer) += 1;
-fprintf(stderr, "skip }\n");
+//fprintf(stderr, "skip }\n");
             }
             
             if (strcmp(node_data, "*") == 0)
             {
-fprintf(stderr, "hmm it is empty node\n");
+//fprintf(stderr, "hmm it is empty node\n");
                 free(node_data);
                 return NULL;
             }
@@ -252,13 +252,13 @@ fprintf(stderr, "hmm it is empty node\n");
             node* root = MakeStringNode(node_data, NULL, NULL);
             root->child_left = TakeTreeFromTxt(tree_file_buffer);
             root->child_right = TakeTreeFromTxt(tree_file_buffer);
-fprintf(stderr, "recurs end\n");
+//fprintf(stderr, "recurs end\n");
             return root;
         }
         else
         {
             fprintf(stderr, "AAAAAA What a fuck!!!!\n");
-fprintf(stderr, "symbol after fuck: %c\n", **tree_file_buffer);
+//fprintf(stderr, "symbol after fuck: %c\n", **tree_file_buffer);
             return NULL;
         }
         return NULL;
@@ -290,3 +290,68 @@ char* PutText(const char *TextFile, long* TextSize)
         return buffer;
     }
 }
+
+int MakeWayStack(node* root, const char* word, Stack_t* way)
+{
+    int result = 0;
+    if(strcmp((char*)(root->data), word) != 0)
+    {
+        if (root->child_left)
+        {
+            //StackPush(way, left_way);
+            result = MakeWayStack(root->child_left, word, way);
+
+            if (!result)
+            {
+                result = MakeWayStack(root->child_right, word, way);
+                if(result) StackPush(way, right_way);
+                return result;
+            }
+            StackPush(way, left_way);
+            return result;
+        }
+        return result;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+void GiveWordDefinition(node* root, const char* word)
+{
+    Stack_t way;
+    StackCtor(&way, 0);
+
+    MakeWayStack(root, word, &way);
+    
+
+    double left_right = 1;
+    StackPop(&way, &left_right);
+    if ((int)left_right == 0)
+    {
+        fprintf(stderr, "Такого слова нет в акиноторе\n");
+        return;
+    }
+    while(left_right)
+    {
+
+        if ((int)left_right == right_way)
+        {       
+            fprintf(stderr, "%s\n", (char*)(root->data)); 
+            root = root->child_right;
+        }
+        if ((int)left_right == left_way)
+        {
+            fprintf(stderr, "НЕ %s\n", (char*)(root->data)); 
+            root = root->child_left;
+        }
+        StackPop(&way, &left_right);
+    }
+    StackDtor(&way);
+}
+
+// void GiveTheDifference(node* root, const char* word_1, const char* word_2)
+// {
+
+// }
